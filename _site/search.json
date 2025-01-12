@@ -1,0 +1,79 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Nduka Boika",
+    "section": "",
+    "text": "Nduka Boika is a seasoned learner with interest in Research Methodology, Educational Statistics, and Eductional Measurement. He is currently pursuing a Ph.D at University of North Texas in the Department of Educational Psychology with a focus on Research Methodology, Measurement and Statistics. His thoughts and journey will be captured herein."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "blog post",
+    "section": "",
+    "text": "CheungMetaSEM\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMachine/Statistical Learning\n\n\n\nReadings and Tutorial\n\n\n\n\n\n\n\nNduka Boika\n\n\nJan 1, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nmeta-analysis\n\n\n\nReadings and Tutorial\n\n\n\n\n\n\n\nNduka Boika\n\n\nJan 1, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nResearch methods\n\n\n\nReadings and Tutorial\n\n\n\n\n\n\n\nNduka Boika\n\n\nJan 1, 2025\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/statistical-learning/machine_learning.html",
+    "href": "posts/statistical-learning/machine_learning.html",
+    "title": "machine_learning",
+    "section": "",
+    "text": "I will express my thoughts on whatever i learn about machine learning."
+  },
+  {
+    "objectID": "posts/meta-analysis/index.html",
+    "href": "posts/meta-analysis/index.html",
+    "title": "meta-analysis",
+    "section": "",
+    "text": "Resources: meta-guide"
+  },
+  {
+    "objectID": "posts/statistical-learning/index.html",
+    "href": "posts/statistical-learning/index.html",
+    "title": "Machine/Statistical Learning",
+    "section": "",
+    "text": "Resources: online resources using R\nonline resources using python\ndeep learning\nApplied"
+  },
+  {
+    "objectID": "posts/statistical-learning/index.html#some-concepts-in-machine-learning",
+    "href": "posts/statistical-learning/index.html#some-concepts-in-machine-learning",
+    "title": "Machine/Statistical Learning",
+    "section": "Some concepts in machine Learning",
+    "text": "Some concepts in machine Learning\n\nBig Data- What is it?\nData is data (that is, information about about a phenomenon, person or an event). When the data is voluminous(consists of many samples), has a high collection rate, is obtained from various sources etc. we can refer to this type of data as “big data”. In the field of education and psychology, big data is not a new concept. example of such data are data collected and compiled by government educational agencies (e.g., NCES, PISA).\n\n\nStatistics\nAfter collecting these data, we need to make sense of it using statistics. Statistics is an umbrella term used to desribe the process of collecting, collating/organizing, analyzing, and interpreting data as well as drawing conclusion to make decision about the data. Statistics also include data visualization. In the field of education and psychology, we analyze educational and psychological data, where for instance, we try to find the relationship stress and students’ academic performance in mathematics. Applying statistics to analyze educational data falls under the branch of applied statistics called Educational statistics.\n\n\n\n\n\n\nNote\n\n\n\nThe mechanics of applied statistics and data-analytics are the same as far as i’m concerned.\n\n\n\n\nData Science\nThis is simply the application of scientific principles to learn from data. Pyrcz (2024) calls it the fourth paradigms for scientific discovery or data-driven scientific discovery.\n\n\n\n\n\nflowchart LR\n  Ist_paradigmn --&gt; experiments\n  2nd_paradigmn --&gt; modeling\n  3rd_paradigmn --&gt; Simulation\n  4th_paradigmn --&gt; Data-science\n\n\n\n\n\n\n\n\nMachine Learning (ML)\nAccording to Wikipedia; Machine learning (ML) is a field of study in artificial intelligence concerned with the development and study of statistical algorithms that can learn from data and generalize to unseen data, and thus perform tasks without explicit instructions.\nRedefining ML in my own terms: This is simply computers helping humans to make sense of data (using statistical algorithms) by learning from the data. Whatever is learnt from the data can then be used to make generalization to much broader or larger data (that we usually don’t know).\nStatistical algorithm; Remember that computers helps us do calculations. As a result, they would need formulas that relates to the specific statistical methods you intend to implement to analyze your data. I think about algorithms as formulas or set of equation that the machine uses to learn how to train the model using data (usually called training data).\n\nThere is a computer that uses algorithms (depending on the statistical method) to train models using sample data (usually called training data).\n\n\n\nPopulation\nThe aim of inferential statistics is to make inferences about the sample data that generalizes to an unknown larger data. The data is not “unknown” per sey, it’s just that we cannot access the data. for instance, you may be interested to know the average math performance of white students in Texas public schools. This is usually impossible because it is difficult to access the target population (assuming you are collecting the data yourself).\n\n\nSample\nSince we cannot access the entire population, we can access a section of the population (using appropriate sampling techniques)- the section of thge population that can accessed or measured is call sample.\n\n\nVariables\nVariables are the specific information about a phenomena or event or person we want to know about (or measure). The variables (or vectors) together with sample size make up the dataset. Examples of variables include; gender of a person, number of dice rolled, students score on an achievement test, amount of sales made in a year etc. There are also different types of variables; two major types are discrete (take on fixed values - usually norminal) and continuous (the values are not fixed - usually interval and ratio). Other forms of variables are; independent (predictor) and dependent (outcome or response) variables. Predictors are variables that explains the outcome variable. Outcome variables are variables that we want to know more about. Predictor and outcome variables can be discrete or continuous. In ML, the predictor is the known as the input feature, while the outcome is known as the output feature in a predictive model. The model is usually accompanied by an error term.\n\n\nInference\nMachine Learning is all about estimating models for two purposes, inference or prediction. :::{.callout-note} Inference must precede prediction, because with inference, we want to generalize from sample to a model of the population. ::: Inference is all about making meaning of the sample data, and connecting the findings to the population. We answer questions like are the math scores between male and female students different in the population. We check this assumption and answer the question using sample data. Whatever the result is, we then generalize it to the population.\n\n\nPrediction\nAfter making inference about the (sample) data and generalizing to the population, we can the predict future samples using the model. For instance, we can predict the maths score of female and male students in future samples.\n\n\n\n\n\n\nNote\n\n\n\nthe focus of prediction is to get the most accurate model estimates (parameter) of future samples."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
+    "section": "",
+    "text": "This is a post with executable code.\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "All qmd files/index.html",
+    "href": "All qmd files/index.html",
+    "title": "Nduka Boika",
+    "section": "",
+    "text": "Nduka Boika is a seasoned learner with interest in Research Methodology, Educational Statistics, and Eductional Measurement. He is currently pursuing a Ph.D at University of North Texas in the Department of Educational Psychology with a focus on Research Methodology, Measurement and Statistics. His thoughts and journey will be captured herein."
+  },
+  {
+    "objectID": "posts/meta-analysis/meta-analysis.html",
+    "href": "posts/meta-analysis/meta-analysis.html",
+    "title": "meta-analysis",
+    "section": "",
+    "text": "Resources: meta-guide"
+  }
+]

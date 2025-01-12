@@ -1,0 +1,13 @@
+---
+title: "Nduka Boika"
+format: html
+image: nduka.JPG
+about:
+  template: jolla
+  #links: 
+   # - icon: linkedin
+      #text: Linkedin
+      #href: 
+---
+
+Nduka Boika is a seasoned learner with interest in Research Methodology, Educational Statistics, and Eductional Measurement. He is currently pursuing a Ph.D at University of North Texas in the Department of Educational Psychology with a focus on Research Methodology, Measurement and Statistics. His thoughts and journey will be captured herein.

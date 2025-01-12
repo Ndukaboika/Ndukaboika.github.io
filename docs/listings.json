@@ -1,0 +1,11 @@
+[
+  {
+    "listing": "/blog.html",
+    "items": [
+      "/posts/statistical-learning/index.html",
+      "/posts/meta-analysis/Meta-analysis.html",
+      "/posts/meta-analysis/CheungMetaSEM.html",
+      "/posts/research-methods/Research methods.html"
+    ]
+  }
+]

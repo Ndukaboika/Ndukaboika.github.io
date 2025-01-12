@@ -1,0 +1,35 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "NdukaBoika"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: "CV"
+        file: cv.qmd
+      - text: "Blog"
+        file: "blog.qmd"
+    right:
+      #- about.qmd
+      - icon: github
+        href: https://github.com/ndukaboika
+      - icon: linkedin
+        href: https://linkedin.com/nduka-boika-447262109
+      - icon: twitter
+        href: https://x.com/boika_nduka
+
+
+format:
+  html:
+    theme: Solar #cosmo
+    code-fold: true
+    code-overflow: wrap
+    highlight-style: github
+    css: styles.css
+    toc: true
+
+editor: visual
+
