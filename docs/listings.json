@@ -2,10 +2,15 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/statistical-learning/ML_R.html",
+      "/posts/meta-analysis/Untitled.html",
+      "/posts/Presentation slides/paper1_presentation.html",
+      "/posts/Presentation slides/CopyOfpres_1.pptx",
       "/posts/statistical-learning/index.html",
       "/posts/meta-analysis/Meta-analysis.html",
       "/posts/meta-analysis/CheungMetaSEM.html",
-      "/posts/research-methods/Research methods.html"
+      "/posts/research-methods/Research methods.html",
+      "/posts/Data programming_R/Data_manipulation.html"
     ]
   }
 ]

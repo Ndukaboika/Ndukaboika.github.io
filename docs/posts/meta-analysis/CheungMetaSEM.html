@@ -6,6 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Nduka Boika">
+<meta name="dcterms.date" content="2025-01-01">
 
 <title>CheungMetaSEM – NdukaBoika</title>
 <style>
@@ -19,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -73,6 +109,35 @@ ul.task-list li input[type="checkbox"] {
       }
 </style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -135,13 +200,28 @@ ul.task-list li input[type="checkbox"] {
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">CheungMetaSEM</h1>
-                      </div>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Readings and Tutorial</div>
+              </div>
+                  </div>
   </div>
     
   
   <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Nduka Boika </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 1, 2025</p>
+      </div>
+    </div>
     
       
     </div>
@@ -150,8 +230,26 @@ ul.task-list li input[type="checkbox"] {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#some-notes-on-meta-analytic-sem-masem" id="toc-some-notes-on-meta-analytic-sem-masem" class="nav-link active" data-scroll-target="#some-notes-on-meta-analytic-sem-masem">Some notes on Meta-analytic SEM (MASEM)</a></li>
+  <li><a href="#replicating-cheungs-example" id="toc-replicating-cheungs-example" class="nav-link" data-scroll-target="#replicating-cheungs-example">Replicating Cheungs example</a></li>
+  <li><a href="#univariate-approach" id="toc-univariate-approach" class="nav-link" data-scroll-target="#univariate-approach">Univariate approach</a></li>
+  <li><a href="#tssem-approach" id="toc-tssem-approach" class="nav-link" data-scroll-target="#tssem-approach">TSSEM approach</a></li>
+  <li><a href="#tssem" id="toc-tssem" class="nav-link" data-scroll-target="#tssem">TSSEM</a></li>
+  <li><a href="#tssem-approach-1" id="toc-tssem-approach-1" class="nav-link" data-scroll-target="#tssem-approach-1">TSSEM approach</a>
+  <ul class="collapse">
+  <li><a href="#tab-b" id="toc-tab-b" class="nav-link" data-scroll-target="#tab-b">Tab B</a></li>
+  </ul></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
+  <li><a href="#slide-title" id="toc-slide-title" class="nav-link" data-scroll-target="#slide-title">Slide Title</a></li>
+  <li><a href="#slide-title-1" id="toc-slide-title-1" class="nav-link" data-scroll-target="#slide-title-1">Slide Title</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -160,8 +258,908 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<section id="some-notes-on-meta-analytic-sem-masem" class="level2">
+<h2 class="anchored" data-anchor-id="some-notes-on-meta-analytic-sem-masem">Some notes on Meta-analytic SEM (MASEM)</h2>
+<p>Meta-analysis combines and synthesizes findings with statistical model. So, we are basically taking all the studies we have systematically reviewed, extract the results, and quantitaively analyze the data or the result. By result we mean the effect sizes.</p>
+<p>Effect-sizes and variance components are the building block of meta-analysis. “Effect-sizes” must satisfy the three conditions below: a. strength - It must tell the magnitude of the relationship or differences between the variables of interest in the model. b. direction - It must tell if the relationship or differences between the variables in the model is positive or negative. c.&nbsp;independence of direction.</p>
+<p><span class="math inline">\(R^2, \Delta R^2, \eta^2, \omega^2\)</span> are not considered effect sizes because they don’t indicate the direction of the magnitude. <span class="math inline">\(\hat{\beta}, \rho , \Delta \mu\)</span>, odds ratio can be classified as effect sizes.</p>
+<p>In meta-analytic SEM, raw correlation coefficients <span class="math inline">\(y_r = r\)</span> are used and a sampling variance component (<span class="math inline">\(SE^2_r\)</span>) = <span class="math inline">\((1 - r^2)^2/n-1\)</span></p>
+<p>The existing differences in population and observed effect-sizes between studies is termed heterogeneity of effect-sizes (<span class="math inline">\(\tau^2\)</span>). (<span class="math inline">\(\tau^2\)</span>) cannot be compared across effect-sizes because it is specific to a particular effect-size.</p>
+<p>We can quantify the (<span class="math inline">\(\tau^2\)</span>) using one of the following formulas below: - <span class="math inline">\(I^2 = Q - (K - 1)/ Q\)</span>; where <span class="math inline">\(I^2\)</span> is -ve then it is truncated to zero (0). ?? what is Q and K. - <span class="math inline">\(I^2 = \hat{\tau^2}/(\hat{\tau^2} + \hat{v_i})\)</span> ; where <span class="math inline">\(\hat{v_i}\)</span> = average sampling variance.</p>
+<p>Interpretation: this is the proportion of total variation due to differences between studies (heterogeneity)- ratio of between studies variances and total variance. (just like in multi-level modeling).</p>
+<p>Rule of thumb: $I^2 = $ 25%, 50%, and 75% are considered low, moderate, and high heterogeneity respectively. As sample size increases, <span class="math inline">\(\hat{v_i}\)</span> becomes smaller and <span class="math inline">\(I^2\)</span> approaches 1.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(I^2\)</span> = absolute measure of heterogeneity, and <span class="math inline">\(I^2\)</span> = relative measure of heterogeneity dependent on <span class="math inline">\(\hat{v_i}\)</span>. Always report both indices.</p>
+</div>
+</div>
+<p>Confidence Intervals</p>
+<p>Generally in Meta Analysis, there are two models:</p>
+<ol type="1">
+<li>Fixed-effects model:</li>
+</ol>
+<ul>
+<li>The population effect-sizes across all studies are assumed to be equal or the same. That is, each of the studies have the same population effect-size. In other words, there is a true effect (in the population, but it is the same for all individual study).</li>
+<li>The differences in the observed effect-size is simply due to random (sampling) error attached to each individual studies with a variance of v.</li>
+<li>We can only generalize the finding to the other findings related to the studies in the meta-analysis (that is., studies that have the same research design, measure the same number of variables, and the same samples). In other words, we cannot generalize the findings from the meta-analysis in FE beyond the studies (to a general population).</li>
+</ul>
+<ol start="2" type="1">
+<li>Random-effects model</li>
+</ol>
+<ul>
+<li>Population effect-sizes can be different for individual studies.</li>
+<li>The differences in the observed effect-sizes are due to a combination random (sampling) error with a variance of v (the difference between the observed and population effect-size) and the True difference (or variance) that is., the difference between the studies effect sizes.</li>
+<li>Findings from the meta analysis can be generalized beyond the studies in the meta-analysis.</li>
+</ul>
+</section>
+<section id="replicating-cheungs-example" class="level2">
+<h2 class="anchored" data-anchor-id="replicating-cheungs-example">Replicating Cheungs example</h2>
+</section>
+<section id="univariate-approach" class="level2">
+<h2 class="anchored" data-anchor-id="univariate-approach">Univariate approach</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Random-effects model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Fixed-effects model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Mixed-effects model</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load the library</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(metaSEM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: OpenMx</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>OpenMx may run faster if it is compiled to take advantage of multiple cores.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>"SLSQP" is set as the default optimizer in OpenMx.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>mxOption(NULL, "Gradient algorithm") is set at "central".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>mxOption(NULL, "Optimality tolerance") is set at "6.3e-14".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>mxOption(NULL, "Gradient iterations") is set at "2".</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Becker83)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  study    di   vi percentage items
+1     1 -0.33 0.03         25     2
+2     2  0.07 0.03         25     2
+3     3 -0.30 0.02         50     2
+4     4  0.35 0.02        100    38
+5     5  0.69 0.07        100    30
+6     6  0.81 0.22        100    45</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Random-effects meta-analysis with ML</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">data=</span>Becker83))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, data = Becker83)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+            Estimate Std.Error    lbound    ubound z value Pr(&gt;|z|)
+Intercept1  0.174734  0.113378 -0.047482  0.396950  1.5412   0.1233
+Tau2_1_1    0.077376  0.054108 -0.028674  0.183426  1.4300   0.1527
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Heterogeneity indices (based on the estimated Tau2):
+                             Estimate
+Intercept1: I2 (Q statistic)   0.6718
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 2
+Degrees of freedom: 8
+-2 log likelihood: 7.928307 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fixed-effects meta-analysis by fixing the heterogeneity variance at 0</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( <span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">data=</span>Becker83, <span class="at">RE.constraints=</span><span class="dv">0</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, data = Becker83, RE.constraints = 0)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+            Estimate Std.Error    lbound    ubound z value Pr(&gt;|z|)  
+Intercept1  0.100640  0.060510 -0.017957  0.219237  1.6632  0.09627 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Heterogeneity indices (based on the estimated Tau2):
+                             Estimate
+Intercept1: I2 (Q statistic)        0
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 1
+Degrees of freedom: 9
+-2 log likelihood: 17.86043 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Mixed-effects meta-analysis with "log(items)" as the predictor</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( <span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">x=</span><span class="fu">log</span>(items), <span class="at">data=</span>Becker83) ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, x = log(items), data = Becker83)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+              Estimate   Std.Error      lbound      ubound z value  Pr(&gt;|z|)
+Intercept1 -3.2015e-01  1.0981e-01 -5.3539e-01 -1.0492e-01 -2.9154  0.003552
+Slope1_1    2.1088e-01  4.5084e-02  1.2251e-01  2.9924e-01  4.6774 2.905e-06
+Tau2_1_1    1.0000e-10  2.0095e-02 -3.9386e-02  3.9386e-02  0.0000  1.000000
+              
+Intercept1 ** 
+Slope1_1   ***
+Tau2_1_1      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Explained variances (R2):
+                           y1
+Tau2 (no predictor)    0.0774
+Tau2 (with predictors) 0.0000
+R2                     1.0000
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 3
+Degrees of freedom: 7
+-2 log likelihood: -4.208024 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="tssem-approach" class="level2">
+<h2 class="anchored" data-anchor-id="tssem-approach">TSSEM approach</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Random-effects model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Fixed-effects model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Mixed-effects model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false">Handling missing covariates with FIML</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load the library</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(metaSEM)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Becker83)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  study    di   vi percentage items
+1     1 -0.33 0.03         25     2
+2     2  0.07 0.03         25     2
+3     3 -0.30 0.02         50     2
+4     4  0.35 0.02        100    38
+5     5  0.69 0.07        100    30
+6     6  0.81 0.22        100    45</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Random-effects meta-analysis with ML</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">data=</span>Becker83))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, data = Becker83)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+            Estimate Std.Error    lbound    ubound z value Pr(&gt;|z|)
+Intercept1  0.174734  0.113378 -0.047482  0.396950  1.5412   0.1233
+Tau2_1_1    0.077376  0.054108 -0.028674  0.183426  1.4300   0.1527
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Heterogeneity indices (based on the estimated Tau2):
+                             Estimate
+Intercept1: I2 (Q statistic)   0.6718
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 2
+Degrees of freedom: 8
+-2 log likelihood: 7.928307 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fixed-effects meta-analysis by fixing the heterogeneity variance at 0</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( <span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">data=</span>Becker83, <span class="at">RE.constraints=</span><span class="dv">0</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, data = Becker83, RE.constraints = 0)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+            Estimate Std.Error    lbound    ubound z value Pr(&gt;|z|)  
+Intercept1  0.100640  0.060510 -0.017957  0.219237  1.6632  0.09627 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Heterogeneity indices (based on the estimated Tau2):
+                             Estimate
+Intercept1: I2 (Q statistic)        0
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 1
+Degrees of freedom: 9
+-2 log likelihood: 17.86043 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Mixed-effects meta-analysis with "log(items)" as the predictor</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( <span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">x=</span><span class="fu">log</span>(items), <span class="at">data=</span>Becker83) ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, x = log(items), data = Becker83)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+              Estimate   Std.Error      lbound      ubound z value  Pr(&gt;|z|)
+Intercept1 -3.2015e-01  1.0981e-01 -5.3539e-01 -1.0492e-01 -2.9154  0.003552
+Slope1_1    2.1088e-01  4.5084e-02  1.2251e-01  2.9924e-01  4.6774 2.905e-06
+Tau2_1_1    1.0000e-10  2.0095e-02 -3.9386e-02  3.9386e-02  0.0000  1.000000
+              
+Intercept1 ** 
+Slope1_1   ***
+Tau2_1_1      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Explained variances (R2):
+                           y1
+Tau2 (no predictor)    0.0774
+Tau2 (with predictors) 0.0000
+R2                     1.0000
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 3
+Degrees of freedom: 7
+-2 log likelihood: -4.208024 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample data from Tenenbaum and Leaper (2002, Table 1).</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>Tenenbaum02 <span class="ot">&lt;-</span> Tenenbaum02[, <span class="fu">c</span>(<span class="st">"r"</span>, <span class="st">"v"</span>, <span class="st">"Offspring_age"</span>, <span class="st">"Year_pub"</span>)]</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Set seed for reproducibility</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234567</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Let's drop 40% in Offspring_age</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>missing_per <span class="ot">&lt;-</span> <span class="fl">0.4</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="do">## MCAR</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">nrow</span>(Tenenbaum02)<span class="sc">*</span>missing_per)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>), <span class="at">times=</span><span class="fu">c</span>(index, <span class="fu">nrow</span>(Tenenbaum02)<span class="sc">-</span>index))</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">sample</span>(index)</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>my.MCAR <span class="ot">&lt;-</span> Tenenbaum02</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>my.MCAR[index, <span class="st">"Offspring_age"</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>my.MCAR<span class="sc">$</span>Offspring_age <span class="ot">&lt;-</span> <span class="fu">scale</span>(my.MCAR<span class="sc">$</span>Offspring_age, <span class="at">scale=</span><span class="cn">FALSE</span>)</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>my.MCAR<span class="sc">$</span>Year_pub <span class="ot">&lt;-</span> <span class="fu">scale</span>(my.MCAR<span class="sc">$</span>Year_pub, <span class="at">scale=</span><span class="cn">FALSE</span>)</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>my.MCAR</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       r            v Offspring_age     Year_pub
+1   0.12 0.0029084053            NA  -4.91666667
+2  -0.08 0.0099721309   -48.3448276   3.08333333
+3  -0.05 0.0103646484   -72.3448276  -7.91666667
+4  -0.08 0.0094022949   -69.3448276  -8.91666667
+5   0.15 0.0013089127   209.6551724  -1.91666667
+6   0.12 0.0404753067   -60.3448276   0.08333333
+7   0.17 0.0052101393            NA   0.08333333
+8   0.34 0.0181898456   107.6551724  -3.91666667
+9  -0.01 0.0020238867            NA   5.08333333
+10  0.33 0.0048124801            NA  10.08333333
+11  0.40 0.0147000000   -93.3448276   1.08333333
+12  0.30 0.0138016667   -90.3448276   4.08333333
+13  0.07 0.0162331805   -57.3448276  13.08333333
+14 -0.02 0.0099920016            NA  -2.91666667
+15  0.19 0.0092910321    -5.3448276  -2.91666667
+16  0.15 0.0006964331    23.6551724  11.08333333
+17  0.19 0.0032148900   -18.3448276   7.08333333
+18  0.02 0.0057097152   -30.3448276  -7.91666667
+19  0.47 0.0085492508            NA  -6.91666667
+20  0.19 0.0046455161     5.6551724  11.08333333
+21  0.33 0.0124071752            NA  -7.91666667
+22  0.06 0.0157589359   -36.3448276  -7.91666667
+23  0.05 0.0033166875            NA   2.08333333
+24  0.24 0.0024877248            NA   5.08333333
+25  0.14 0.0123228738            NA -10.91666667
+26 -0.02 0.0285485760            NA   5.08333333
+27  0.28 0.0066877682            NA  11.08333333
+28  0.14 0.0034825513    35.6551724   9.08333333
+29  0.27 0.0245575546   -42.3448276  -3.91666667
+30  0.38 0.0140779108   -12.3448276 -10.91666667
+31  0.52 0.0212926464            NA  -5.91666667
+32  0.66 0.0127418944    23.6551724  -5.91666667
+33  0.36 0.0303038464    23.6551724  -5.91666667
+34  0.21 0.0042698356    11.6551724  10.08333333
+35  0.19 0.0042231964    11.6551724  10.08333333
+36  0.14 0.0184843108            NA -12.91666667
+37  0.36 0.0102377859    95.6551724  -7.91666667
+38  0.09 0.0006314927    23.6551724  11.08333333
+39  0.16 0.0053946327            NA  13.08333333
+40 -0.07 0.0319427100            NA  -0.91666667
+41  0.36 0.0140295585    89.6551724  -8.91666667
+42  0.36 0.0008270700    95.6551724  -4.91666667
+43  0.22 0.0238300674    -0.3448276   8.08333333
+44  0.04 0.0066899501   -72.3448276   7.08333333
+45  0.06 0.0146001906            NA  -8.91666667
+46  0.41 0.0150447307            NA  -3.91666667
+47  0.04 0.0140394727            NA  -3.91666667
+48  0.23 0.0067954425   -48.3448276   2.08333333</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">metaFIML</span>(<span class="at">y=</span>r, <span class="at">v=</span>v, <span class="at">x=</span>Offspring_age, <span class="at">av=</span>Year_pub, <span class="at">data=</span>my.MCAR)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+metaFIML(y = r, v = v, x = Offspring_age, av = Year_pub, data = my.MCAR)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+              Estimate   Std.Error      lbound      ubound z value  Pr(&gt;|z|)
+Tau2_1_1    1.2136e-02  4.5317e-03  3.2543e-03  2.1018e-02  2.6781 0.0074043
+CovX1_X1    4.6116e+03  1.2071e+03  2.2456e+03  6.9775e+03  3.8203 0.0001333
+CovX2_X1   -6.0799e+01  9.3469e+01 -2.4399e+02  1.2240e+02 -0.6505 0.5153883
+CovX2_X2    5.7118e+01  1.1659e+01  3.4267e+01  7.9970e+01  4.8990 9.633e-07
+CovX2_Y1   -1.3300e-01  1.6016e-01 -4.4691e-01  1.8090e-01 -0.8305 0.4062841
+Slope1_1    6.8319e-04  3.5911e-04 -2.0648e-05  1.3870e-03  1.9025 0.0571101
+Intercept1  1.8420e-01  2.1886e-02  1.4130e-01  2.2709e-01  8.4163 &lt; 2.2e-16
+MeanX1      7.7305e-02  1.2402e+01 -2.4230e+01  2.4385e+01  0.0062 0.9950265
+MeanX2     -5.7253e-08  1.0908e+00 -2.1380e+00  2.1380e+00  0.0000 1.0000000
+              
+Tau2_1_1   ** 
+CovX1_X1   ***
+CovX2_X1      
+CovX2_X2   ***
+CovX2_Y1      
+Slope1_1   .  
+Intercept1 ***
+MeanX1        
+MeanX2        
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Q statistic on the homogeneity of effect sizes: 179.0075
+Degrees of freedom of the Q statistic: 47
+P value of the Q statistic: 0
+
+Explained variances (R2):
+                           y1
+Tau2 (no predictor)    0.0142
+Tau2 (with predictors) 0.0121
+R2                     0.1474
+
+Number of studies (or clusters): 48
+Number of observed statistics: 9
+Number of estimated parameters: 9
+Degrees of freedom: 0
+-2 log likelihood: 613.2553 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="tssem" class="level2">
+<h2 class="anchored" data-anchor-id="tssem">TSSEM</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Random-effects model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Fixed-effects model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">Mixed-effects model</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load the library</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(metaSEM)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Becker83)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  study    di   vi percentage items
+1     1 -0.33 0.03         25     2
+2     2  0.07 0.03         25     2
+3     3 -0.30 0.02         50     2
+4     4  0.35 0.02        100    38
+5     5  0.69 0.07        100    30
+6     6  0.81 0.22        100    45</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Random-effects meta-analysis with ML</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">data=</span>Becker83))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, data = Becker83)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+            Estimate Std.Error    lbound    ubound z value Pr(&gt;|z|)
+Intercept1  0.174734  0.113378 -0.047482  0.396950  1.5412   0.1233
+Tau2_1_1    0.077376  0.054108 -0.028674  0.183426  1.4300   0.1527
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Heterogeneity indices (based on the estimated Tau2):
+                             Estimate
+Intercept1: I2 (Q statistic)   0.6718
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 2
+Degrees of freedom: 8
+-2 log likelihood: 7.928307 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fixed-effects meta-analysis by fixing the heterogeneity variance at 0</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( <span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">data=</span>Becker83, <span class="at">RE.constraints=</span><span class="dv">0</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, data = Becker83, RE.constraints = 0)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+            Estimate Std.Error    lbound    ubound z value Pr(&gt;|z|)  
+Intercept1  0.100640  0.060510 -0.017957  0.219237  1.6632  0.09627 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Heterogeneity indices (based on the estimated Tau2):
+                             Estimate
+Intercept1: I2 (Q statistic)        0
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 1
+Degrees of freedom: 9
+-2 log likelihood: 17.86043 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Mixed-effects meta-analysis with "log(items)" as the predictor</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( <span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">x=</span><span class="fu">log</span>(items), <span class="at">data=</span>Becker83) ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, x = log(items), data = Becker83)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+              Estimate   Std.Error      lbound      ubound z value  Pr(&gt;|z|)
+Intercept1 -3.2015e-01  1.0981e-01 -5.3539e-01 -1.0492e-01 -2.9154  0.003552
+Slope1_1    2.1088e-01  4.5084e-02  1.2251e-01  2.9924e-01  4.6774 2.905e-06
+Tau2_1_1    1.0000e-10  2.0095e-02 -3.9386e-02  3.9386e-02  0.0000  1.000000
+              
+Intercept1 ** 
+Slope1_1   ***
+Tau2_1_1      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Explained variances (R2):
+                           y1
+Tau2 (no predictor)    0.0774
+Tau2 (with predictors) 0.0000
+R2                     1.0000
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 3
+Degrees of freedom: 7
+-2 log likelihood: -4.208024 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="tssem-approach-1" class="level2">
+<h2 class="anchored" data-anchor-id="tssem-approach-1">TSSEM approach</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Random-effects model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Fixed-effects model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" role="tab" aria-controls="tabset-4-3" aria-selected="false">Mixed-effects model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-4" role="tab" aria-controls="tabset-4-4" aria-selected="false">Handling missing covariates</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load the library</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(metaSEM)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Becker83)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  study    di   vi percentage items
+1     1 -0.33 0.03         25     2
+2     2  0.07 0.03         25     2
+3     3 -0.30 0.02         50     2
+4     4  0.35 0.02        100    38
+5     5  0.69 0.07        100    30
+6     6  0.81 0.22        100    45</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Random-effects meta-analysis with ML</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">data=</span>Becker83))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, data = Becker83)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+            Estimate Std.Error    lbound    ubound z value Pr(&gt;|z|)
+Intercept1  0.174734  0.113378 -0.047482  0.396950  1.5412   0.1233
+Tau2_1_1    0.077376  0.054108 -0.028674  0.183426  1.4300   0.1527
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Heterogeneity indices (based on the estimated Tau2):
+                             Estimate
+Intercept1: I2 (Q statistic)   0.6718
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 2
+Degrees of freedom: 8
+-2 log likelihood: 7.928307 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fixed-effects meta-analysis by fixing the heterogeneity variance at 0</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( <span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">data=</span>Becker83, <span class="at">RE.constraints=</span><span class="dv">0</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, data = Becker83, RE.constraints = 0)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+            Estimate Std.Error    lbound    ubound z value Pr(&gt;|z|)  
+Intercept1  0.100640  0.060510 -0.017957  0.219237  1.6632  0.09627 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Heterogeneity indices (based on the estimated Tau2):
+                             Estimate
+Intercept1: I2 (Q statistic)        0
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 1
+Degrees of freedom: 9
+-2 log likelihood: 17.86043 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Mixed-effects meta-analysis with "log(items)" as the predictor</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( <span class="fu">meta</span>(<span class="at">y=</span>di, <span class="at">v=</span>vi, <span class="at">x=</span><span class="fu">log</span>(items), <span class="at">data=</span>Becker83) ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+meta(y = di, v = vi, x = log(items), data = Becker83)
+
+95% confidence intervals: z statistic approximation (robust=FALSE)
+Coefficients:
+              Estimate   Std.Error      lbound      ubound z value  Pr(&gt;|z|)
+Intercept1 -3.2015e-01  1.0981e-01 -5.3539e-01 -1.0492e-01 -2.9154  0.003552
+Slope1_1    2.1088e-01  4.5084e-02  1.2251e-01  2.9924e-01  4.6774 2.905e-06
+Tau2_1_1    1.0000e-10  2.0095e-02 -3.9386e-02  3.9386e-02  0.0000  1.000000
+              
+Intercept1 ** 
+Slope1_1   ***
+Tau2_1_1      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Q statistic on the homogeneity of effect sizes: 30.64949
+Degrees of freedom of the Q statistic: 9
+P value of the Q statistic: 0.0003399239
+
+Explained variances (R2):
+                           y1
+Tau2 (no predictor)    0.0774
+Tau2 (with predictors) 0.0000
+R2                     1.0000
+
+Number of studies (or clusters): 10
+Number of observed statistics: 10
+Number of estimated parameters: 3
+Degrees of freedom: 7
+-2 log likelihood: -4.208024 
+OpenMx status1: 0 ("0" or "1": The optimization is considered fine.
+Other values may indicate problems.)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-4-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-4-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample data from Tenenbaum and Leaper (2002, Table 1).</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>Tenenbaum02 <span class="ot">&lt;-</span> Tenenbaum02[, <span class="fu">c</span>(<span class="st">"r"</span>, <span class="st">"v"</span>, <span class="st">"Offspring_age"</span>, <span class="st">"Year_pub"</span>)]</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Set seed for reproducibility</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234567</span>)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Let's drop 40% in Offspring_age</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>missing_per <span class="ot">&lt;-</span> <span class="fl">0.4</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="do">## MCAR</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">nrow</span>(Tenenbaum02)<span class="sc">*</span>missing_per)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>), <span class="at">times=</span><span class="fu">c</span>(index, <span class="fu">nrow</span>(Tenenbaum02)<span class="sc">-</span>index))</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">sample</span>(index)</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>my.MCAR <span class="ot">&lt;-</span> Tenenbaum02</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>my.MCAR[index, <span class="st">"Offspring_age"</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>my.MCAR<span class="sc">$</span>Offspring_age <span class="ot">&lt;-</span> <span class="fu">scale</span>(my.MCAR<span class="sc">$</span>Offspring_age, <span class="at">scale=</span><span class="cn">FALSE</span>)</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>my.MCAR<span class="sc">$</span>Year_pub <span class="ot">&lt;-</span> <span class="fu">scale</span>(my.MCAR<span class="sc">$</span>Year_pub, <span class="at">scale=</span><span class="cn">FALSE</span>)</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>my.MCAR</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       r            v Offspring_age     Year_pub
+1   0.12 0.0029084053            NA  -4.91666667
+2  -0.08 0.0099721309   -48.3448276   3.08333333
+3  -0.05 0.0103646484   -72.3448276  -7.91666667
+4  -0.08 0.0094022949   -69.3448276  -8.91666667
+5   0.15 0.0013089127   209.6551724  -1.91666667
+6   0.12 0.0404753067   -60.3448276   0.08333333
+7   0.17 0.0052101393            NA   0.08333333
+8   0.34 0.0181898456   107.6551724  -3.91666667
+9  -0.01 0.0020238867            NA   5.08333333
+10  0.33 0.0048124801            NA  10.08333333
+11  0.40 0.0147000000   -93.3448276   1.08333333
+12  0.30 0.0138016667   -90.3448276   4.08333333
+13  0.07 0.0162331805   -57.3448276  13.08333333
+14 -0.02 0.0099920016            NA  -2.91666667
+15  0.19 0.0092910321    -5.3448276  -2.91666667
+16  0.15 0.0006964331    23.6551724  11.08333333
+17  0.19 0.0032148900   -18.3448276   7.08333333
+18  0.02 0.0057097152   -30.3448276  -7.91666667
+19  0.47 0.0085492508            NA  -6.91666667
+20  0.19 0.0046455161     5.6551724  11.08333333
+21  0.33 0.0124071752            NA  -7.91666667
+22  0.06 0.0157589359   -36.3448276  -7.91666667
+23  0.05 0.0033166875            NA   2.08333333
+24  0.24 0.0024877248            NA   5.08333333
+25  0.14 0.0123228738            NA -10.91666667
+26 -0.02 0.0285485760            NA   5.08333333
+27  0.28 0.0066877682            NA  11.08333333
+28  0.14 0.0034825513    35.6551724   9.08333333
+29  0.27 0.0245575546   -42.3448276  -3.91666667
+30  0.38 0.0140779108   -12.3448276 -10.91666667
+31  0.52 0.0212926464            NA  -5.91666667
+32  0.66 0.0127418944    23.6551724  -5.91666667
+33  0.36 0.0303038464    23.6551724  -5.91666667
+34  0.21 0.0042698356    11.6551724  10.08333333
+35  0.19 0.0042231964    11.6551724  10.08333333
+36  0.14 0.0184843108            NA -12.91666667
+37  0.36 0.0102377859    95.6551724  -7.91666667
+38  0.09 0.0006314927    23.6551724  11.08333333
+39  0.16 0.0053946327            NA  13.08333333
+40 -0.07 0.0319427100            NA  -0.91666667
+41  0.36 0.0140295585    89.6551724  -8.91666667
+42  0.36 0.0008270700    95.6551724  -4.91666667
+43  0.22 0.0238300674    -0.3448276   8.08333333
+44  0.04 0.0066899501   -72.3448276   7.08333333
+45  0.06 0.0146001906            NA  -8.91666667
+46  0.41 0.0150447307            NA  -3.91666667
+47  0.04 0.0140394727            NA  -3.91666667
+48  0.23 0.0067954425   -48.3448276   2.08333333</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>#::::: columns #::: {.column width=“40%”} #:::</p>
+<p>#::: {.column width=“60%”} #::: #:::::</p>
+<p>#::: notes #No notes #:::</p>
+<p>#::: aside #Some additional commentary of more peripheral interest. #:::</p>
+<div class="cell" data-output-location="slide">
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 37 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 37 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CheungMetaSEM_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>#::: panel-tabset ### Tab A</p>
+<div class="cell" data-output-location="slide">
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 37 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 37 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CheungMetaSEM_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="tab-b" class="level3">
+<h3 class="anchored" data-anchor-id="tab-b">Tab B</h3>
+<p>Content for <code>Tab B</code> :::</p>
+</section>
+</section>
+<section id="section" class="level2" data-background-color="aquamarine">
+<h2 data-background-color="aquamarine" class="anchored" data-anchor-id="section"></h2>
+<p>(A slide with no title)</p>
+</section>
+<section id="section-1" class="level2" data-background-color="black" data-background-image="https://placekitten.com/100/100" data-background-size="100px" data-background-repeat="repeat">
+<h2 data-background-color="black" data-background-image="https://placekitten.com/100/100" data-background-size="100px" data-background-repeat="repeat" class="anchored" data-anchor-id="section-1"></h2>
+<p>(Another slide with no title)</p>
+</section>
+<section id="slide-title" class="level2" data-background-gradient="linear-gradient(to bottom, #283b95, #17b2c3)">
+<h2 data-background-gradient="linear-gradient(to bottom, #283b95, #17b2c3)" class="anchored" data-anchor-id="slide-title">Slide Title</h2>
+</section>
+<section id="slide-title-1" class="level2" data-background-gradient="radial-gradient(#283b95, #17b2c3)">
+<h2 data-background-gradient="radial-gradient(#283b95, #17b2c3)" class="anchored" data-anchor-id="slide-title-1">Slide Title</h2>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -1,0 +1,256 @@
+{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \qc \f0 \sa180 \li0 \fi0 \b \fs36 SEM-Based Univariate Meta-Analysis\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Loading required package: OpenMx\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 OpenMx may run faster if it is compiled to take advantage of multiple cores.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 "SLSQP" is set as the default optimizer in OpenMx.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 mxOption(NULL, "Gradient algorithm") is set at "central".\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 mxOption(NULL, "Optimality tolerance") is set at "6.3e-14".\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 mxOption(NULL, "Gradient iterations") is set at "2".\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Structural Equation Modeling (SEM) Based Univariate Meta-Analysis\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 1. {\b Introduction}\par}
+{\pard \ql \f0 \sa180 \li720 \fi0 {\b Key Conceptual Foundations}\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab {\b SEM-Meta Integration}:\line Treat studies as \u8220"subjects\u8221" in SEM frameworks, where:\par}
+{\pard \ql \f0 \sa0 \li1440 \fi-360 \endash \tx360\tab {\b Observed variables} = Reported effect sizes (e.g., SMD, odds ratios).\line \par}
+{\pard \ql \f0 \sa0 \li1440 \fi-360 \endash \tx360\tab {\b Latent variables} = True population effects (modeled as unobserved constructs).\line \sa180\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab {\b Advantages}:\par}
+{\pard \ql \f0 \sa0 \li1440 \fi-360 \endash \tx360\tab Handle missing data via {\b Full Information Maximum Likelihood (FIML)}.\line \par}
+{\pard \ql \f0 \sa0 \li1440 \fi-360 \endash \tx360\tab Fix known sampling variances using {\b definition variables}.\line \par}
+{\pard \ql \f0 \sa0 \li1440 \fi-360 \endash \tx360\tab Visualize models with path diagrams (e.g., latent heterogeneity).\sa180\sa180\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 2. {\b Computing Effect Sizes}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Standardized Mean Difference (SMD)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Equations}: $$
+y_\{\\text\{SMD\}\} = \\frac\{\\bar\{X\}_1 - \\bar\{X\}_2\}\{S_\{\\text\{pooled\}\}\}, \\quad 
+S_\{\\text\{pooled\}\} = \\sqrt\{\\frac\{(n_1-1)S_1^2 + (n_2-1)S_2^2\}\{n_1 + n_2 - 2\}\}
+$$\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Sampling Variance}: $$
+v_\{\\text\{SMD\}\} = \\frac\{n_1 + n_2\}\{n_1 n_2\} + \\frac\{y_\{\\text\{SMD\}\}^2\}\{2(n_1 + n_2)\}
+$$\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b R Code}:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 compute_SMD <- function(m1, m2, sd1, sd2, n1, n2) \{\line
+  pooled_sd <- sqrt(((n1 - 1)*sd1^2 + (n2 - 1)*sd2^2) / (n1 + n2 - 2))\line
+  smd <- (m1 - m2) / pooled_sd\line
+  v_smd <- (n1 + n2)/(n1 * n2) + smd^2/(2*(n1 + n2))\line
+  return(data.frame(y = smd, v = v_smd))\line
+\}\line
+\line
+# Example: Compute SMD for two groups\line
+compute_SMD(m1 = 10, m2 = 8, sd1 = 2, sd2 = 1.5, n1 = 50, n2 = 50)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1          y      v\line
+1 1.131371 0.0464\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 3. {\b Fixed-Effect Model}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Model Specification\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Equation}: {\i y}{\sub {\i i}}\u8196 ?=\u8196 ?{\i \u946 ?}{\sub {\i F}}\u8197 ?+\u8197 ?{\i e}{\sub {\i i}},\u8202 ?\u8193 ?{\i e}{\sub {\i i}}\u8196 ?\u8764 ?\u8196 ?{\i N}(0,\u8198 ?{\i v}{\sub {\i i}})\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b SEM Representation}: - No latent variables.\line - Fixed parameter: {\i \u946 ?}{\sub {\i F}} (common effect).\line - Known sampling variance {\i v}{\sub {\i i}} fixed via definition variables.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b R Code}:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 data_fixed <- data.frame(\line
+  y = c(0.5, 0.7, 0.3),   # Effect sizes\line
+  v = c(0.1, 0.15, 0.2)   # Sampling variances\line
+)\line
+\line
+fixed_model <- meta(y = y, v = v, data = data_fixed, model.name = "Fixed Effect")\line
+summary(fixed_model)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+Call:\line
+meta(y = y, v = v, data = data_fixed, model.name = "Fixed Effect")\line
+\line
+95% confidence intervals: z statistic approximation (robust=FALSE)\line
+Coefficients:\line
+             Estimate  Std.Error     lbound     ubound z value Pr(>|z|)  \line
+Intercept1 5.1538e-01 2.1472e-01 9.4549e-02 9.3622e-01  2.4003  0.01638 *\line
+Tau2_1_1   1.0000e-10         NA         NA         NA      NA       NA  \line
+---\line
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\line
+\line
+Q statistic on the homogeneity of effect sizes: 0.4615385\line
+Degrees of freedom of the Q statistic: 2\line
+P value of the Q statistic: 0.7939227\line
+\line
+Heterogeneity indices (based on the estimated Tau2):\line
+                             Estimate\line
+Intercept1: I2 (Q statistic)        0\line
+\line
+Number of studies (or clusters): 3\line
+Number of observed statistics: 3\line
+Number of estimated parameters: 2\line
+Degrees of freedom: 1\line
+-2 log likelihood: 0.1660267 \line
+OpenMx status1: 5 ("0" or "1": The optimization is considered fine.\line
+Other values may indicate problems.)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Warning in print.summary.meta(x): OpenMx status1 is neither 0 or 1. You are advised to 'rerun' it again.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Interpretation}: - {\f1 Estimate} = {\i \u946 ?\u770 ?}{\sub {\i F}} (common effect).\line - {\f1 Std.Error} = standard error of {\i \u946 ?\u770 ?}{\sub {\i F}}.\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 4. {\b Random-Effects Model}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Model Specification\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Equation}: {\i y}{\sub {\i i}}\u8196 ?=\u8196 ?{\i \u946 ?}{\sub {\i R}}\u8197 ?+\u8197 ?{\i u}{\sub {\i i}}\u8197 ?+\u8197 ?{\i e}{\sub {\i i}},\u8202 ?\u8193 ?{\i u}{\sub {\i i}}\u8196 ?\u8764 ?\u8196 ?{\i N}(0,\u8198 ?{\i \u964 ?}{\super 2}),\u8202 ?\u8193 ?{\i e}{\sub {\i i}}\u8196 ?\u8764 ?\u8196 ?{\i N}(0,\u8198 ?{\i v}{\sub {\i i}})\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b SEM Representation}: - {\b Latent variable}: {\i f}{\sub {\i i}}\u8196 ?\u8764 ?\u8196 ?{\i N}({\i \u946 ?}{\sub {\i R}},\u8198 ?{\i \u964 ?}{\super 2}) (true effect).\line - {\b Observed variable}: {\i y}{\sub {\i i}}\u8196 ?=\u8196 ?{\i f}{\sub {\i i}}\u8197 ?+\u8197 ?{\i e}{\sub {\i i}}, with {\i e}{\sub {\i i}}\u8196 ?\u8764 ?\u8196 ?{\i N}(0,\u8198 ?{\i v}{\sub {\i i}}).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Key Metrics}: - {\i \u964 ?}{\super 2}: Between-study variance.\line - $I^2 = \\frac\{\\tau^2\}\{\\tau^2 + \\tilde\{v\}\}$: Proportion of total variance due to heterogeneity.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b R Code}:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 random_model <- meta(y = y, v = v, data = data_fixed, model.name = "Random Effects")\line
+summary(random_model)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+Call:\line
+meta(y = y, v = v, data = data_fixed, model.name = "Random Effects")\line
+\line
+95% confidence intervals: z statistic approximation (robust=FALSE)\line
+Coefficients:\line
+             Estimate  Std.Error     lbound     ubound z value Pr(>|z|)  \line
+Intercept1 5.1538e-01 2.1472e-01 9.4549e-02 9.3622e-01  2.4003  0.01638 *\line
+Tau2_1_1   1.0000e-10         NA         NA         NA      NA       NA  \line
+---\line
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\line
+\line
+Q statistic on the homogeneity of effect sizes: 0.4615385\line
+Degrees of freedom of the Q statistic: 2\line
+P value of the Q statistic: 0.7939227\line
+\line
+Heterogeneity indices (based on the estimated Tau2):\line
+                             Estimate\line
+Intercept1: I2 (Q statistic)        0\line
+\line
+Number of studies (or clusters): 3\line
+Number of observed statistics: 3\line
+Number of estimated parameters: 2\line
+Degrees of freedom: 1\line
+-2 log likelihood: 0.1660267 \line
+OpenMx status1: 5 ("0" or "1": The optimization is considered fine.\line
+Other values may indicate problems.)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Warning in print.summary.meta(x): OpenMx status1 is neither 0 or 1. You are advised to 'rerun' it again.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 # Calculate I\u178 ?\line
+I2 <- random_model$I2.values\line
+#cat("I\u178 ? =", round(I2, 2))\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 5. {\b Mixed-Effects Model}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel2 \b \fs28 Model Specification\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Equation}: {\i y}{\sub {\i i}}\u8196 ?=\u8196 ?{\i \u946 ?}{\sub 0}\u8197 ?+\u8197 ?{\i \u946 ?}{\sub 1}{\i x}{\sub {\i i}}\u8197 ?+\u8197 ?{\i u}{\sub {\i i}}\u8197 ?+\u8197 ?{\i e}{\sub {\i i}},\u8202 ?\u8193 ?{\i u}{\sub {\i i}}\u8196 ?\u8764 ?\u8196 ?{\i N}(0,\u8198 ?{\i \u964 ?}{\super 2})\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b SEM Representation}: - {\b Latent variable}: {\i f}{\sub {\i i}}\u8196 ?\u8764 ?\u8196 ?{\i N}({\i \u946 ?}{\sub 0}\u8197 ?+\u8197 ?{\i \u946 ?}{\sub 1}{\i x}{\sub {\i i}},\u8198 ?{\i \u964 ?}{\super 2}).\line - {\b Observed variable}: {\i y}{\sub {\i i}}\u8196 ?=\u8196 ?{\i f}{\sub {\i i}}\u8197 ?+\u8197 ?{\i e}{\sub {\i i}}, with {\i e}{\sub {\i i}}\u8196 ?\u8764 ?\u8196 ?{\i N}(0,\u8198 ?{\i v}{\sub {\i i}}).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Interpretation}: - {\i \u946 ?}{\sub 1}: Change in effect size per unit increase in {\i x}{\sub {\i i}}.\line - $R^2 = \\frac\{\\tau^2_\{\\text\{without \} x\} - \\tau^2_\{\\text\{with \} x\}\}\{\\tau^2_\{\\text\{without \} x\}\}$: Variance explained by {\i x}{\sub {\i i}}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b R Code}:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 # Add moderator\line
+data_mixed <- data.frame(\line
+  y = c(0.5, 0.7, 0.3),\line
+  v = c(0.1, 0.15, 0.2),\line
+  year = c(2010, 2015, 2020)  # Moderator\line
+)\line
+\line
+mixed_model <- meta(y = y, v = v, x = year, data = data_mixed, model.name = "Mixed Effects")\line
+summary(mixed_model)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+Call:\line
+meta(y = y, v = v, x = year, data = data_mixed, model.name = "Mixed Effects")\line
+\line
+95% confidence intervals: z statistic approximation (robust=FALSE)\line
+Coefficients:\line
+              Estimate   Std.Error      lbound      ubound z value Pr(>|z|)\line
+Intercept1  2.7367e+01  1.0769e+02 -1.8370e+02  2.3843e+02  0.2541   0.7994\line
+Slope1_1   -1.3333e-02  5.3473e-02 -1.1814e-01  9.1472e-02 -0.2493   0.8031\line
+Tau2_1_1    1.0000e-10          NA          NA          NA      NA       NA\line
+\line
+Q statistic on the homogeneity of effect sizes: 0.4615385\line
+Degrees of freedom of the Q statistic: 2\line
+P value of the Q statistic: 0.7939227\line
+\line
+Explained variances (R2):\line
+                       y1\line
+Tau2 (no predictor)     0\line
+Tau2 (with predictors)  0\line
+R2                      0\line
+\line
+Number of studies (or clusters): 3\line
+Number of observed statistics: 3\line
+Number of estimated parameters: 3\line
+Degrees of freedom: 0\line
+-2 log likelihood: 0.1044882 \line
+OpenMx status1: 5 ("0" or "1": The optimization is considered fine.\line
+Other values may indicate problems.)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Warning in print.summary.meta(x): OpenMx status1 is neither 0 or 1. You are advised to 'rerun' it again.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 # Calculate R\u178 ?\line
+tau2_without_x <- meta(y = y, v = v, data = data_mixed)$tau2\line
+tau2_with_x <- mixed_model$tau2\line
+R2 <- (tau2_without_x - tau2_with_x) / tau2_without_x\line
+cat("R\u178 ? =", round(R2, 2))\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 R\u178 ? = \par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 6. {\b Conceptual Deep Dive}\par}
+{\pard \ql \f0 \sa180 \li720 \fi0 {\b Why SEM for Meta-Analysis?}\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 1.\tx360\tab {\b Latent Variables}:\par}
+{\pard \ql \f0 \sa0 \li1440 \fi-360 \endash \tx360\tab Separate true effects ({\i f}{\sub {\i i}}) from sampling error ({\i e}{\sub {\i i}}).\line \par}
+{\pard \ql \f0 \sa0 \li1440 \fi-360 \endash \tx360\tab Example: If {\i \u964 ?}{\super 2}\u8196 ?=\u8196 ?0, all variability is due to sampling error (fixed-effect model).\sa180\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 2.\tx360\tab {\b Definition Variables}:\par}
+{\pard \ql \f0 \sa0 \li1440 \fi-360 \endash \tx360\tab Fix known sampling variances ({\i v}{\sub {\i i}}) as constants per study.\sa180\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 3.\tx360\tab {\b Missing Data}:\par}
+{\pard \ql \f0 \sa0 \li1440 \fi-360 \endash \tx360\tab FIML retains studies with incomplete data, unlike traditional listwise deletion.\line \sa180\sa180\par}
+{\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 7. {\b Summary}\par}
+{
+\trowd \trgaph120
+\clbrdrb\brdrs\cellx1600\clbrdrb\brdrs\cellx4400\clbrdrb\brdrs\cellx7200\clbrdrb\brdrs\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Model\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Equation\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 SEM Component\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 R Function\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx1600\cellx4400\cellx7200\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Fixed-Effect\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\i y}{\sub {\i i}}\u8196 ?=\u8196 ?{\i \u946 ?}{\sub {\i F}}\u8197 ?+\u8197 ?{\i e}{\sub {\i i}}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 No latent variables\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 meta(y, v)}\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx1600\cellx4400\cellx7200\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Random-Effects\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\i y}{\sub {\i i}}\u8196 ?=\u8196 ?{\i \u946 ?}{\sub {\i R}}\u8197 ?+\u8197 ?{\i u}{\sub {\i i}}\u8197 ?+\u8197 ?{\i e}{\sub {\i i}}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Latent {\i f}{\sub {\i i}}\u8196 ?\u8764 ?\u8196 ?{\i N}({\i \u946 ?}{\sub {\i R}},\u8198 ?{\i \u964 ?}{\super 2})\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 meta(y, v)}\par}
+\cell}
+}
+\intbl\row}
+{
+\trowd \trgaph120
+\cellx1600\cellx4400\cellx7200\cellx8640
+\trkeep\intbl
+{
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Mixed-Effects\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\i y}{\sub {\i i}}\u8196 ?=\u8196 ?{\i \u946 ?}{\sub 0}\u8197 ?+\u8197 ?{\i \u946 ?}{\sub 1}{\i x}{\sub {\i i}}\u8197 ?+\u8197 ?{\i u}{\sub {\i i}}\u8197 ?+\u8197 ?{\i e}{\sub {\i i}}\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 Latent {\i f}{\sub {\i i}}\u8196 ?\u8764 ?\u8196 ?{\i N}({\i \u946 ?}{\sub 0}\u8197 ?+\u8197 ?{\i \u946 ?}{\sub 1}{\i x}{\sub {\i i}},\u8198 ?{\i \u964 ?}{\super 2})\par}
+\cell}
+{{\pard\intbl \ql \f0 \sa0 \li0 \fi0 {\f1 meta(y, v, x)}\par}
+\cell}
+}
+\intbl\row}
+{\pard \ql \f0 \sa180 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li720 \fi0 {\b Advantages of SEM-Based Meta-Analysis}\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab {\b Flexibility}: Extend to multivariate/multilevel models.\line \par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab {\b Precision}: Directly model heterogeneity as latent variance.\line \par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab {\b Robustness}: Integrate with SEM\u8217's estimation tools (e.g., FIML, constraints).\line \sa180\par}
+}

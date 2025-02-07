@@ -1,0 +1,262 @@
+---
+title: "SEM-Based Univariate Meta-Analysis"
+format: html
+engine: knitr
+theme: sky #solarized
+---
+
+```{r}
+#| echo: false
+library(metaSEM)
+```
+
+# Structural Equation Modeling (SEM) Based Univariate Meta-Analysis
+
+---
+
+## 1. **Background** {.unnumbered}
+
+:::: {.callout-note}
+### Conceptualization of Meta-Analysis as SEM
+
+- Treats studies in a meta-analysis as subjects in SEM.
+- Observed effect sizes correspond to observed variables; population (true) effect sizes correspond to latent variables.
+- Mean and variance of effect sizes equate to average effect and heterogeneity variance in meta-analysis.
+- Sampling variance is analogous to measurement error in SEM.
+- Study characteristics (covariates) can predict effect sizes in cases of excess heterogeneity.
+
+- **Advantages**:  
+  - Handle missing data via **Full Information Maximum Likelihood (FIML)**.  
+  - Fix known sampling variances using **definition variables**.  
+  - Visualize models with path diagrams (e.g., latent heterogeneity).
+::::
+
+---
+
+## 2. **Computing Effect Sizes**
+:::: {.callout-note}
+- Definition of Effect Size
+  - Represents the magnitude of a phenomenon in quantitative terms.
+  - Can be standardized (e.g., Cohen’s d, correlation coefficient) or unstandardized (e.g., raw mean difference).
+::::
+
+- The generic effect-size for each `study i` is de  notated as $y_i$ and is represented as:
+                            $$y_i = f_i + e_i$$
+                            $y_i$ = sample (observed) effect size for the ith study
+                            $f_i$ = population (true) effect size
+                            $e_i$ = error term in the observed effect-size
+                            $var(e_i)$ = a.k.a $v_i$ sampling variance (usually known in MA)
+                            
+#### Standardized Mean Difference (SMD)
+
+**Equations**:
+$$
+y_{\text{SMD}} = \frac{\bar{X}_1 - \bar{X}_2}{S_{\text{pooled}}}, \quad 
+S_{\text{pooled}} = \sqrt{\frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1 + n_2 - 2}}
+$$
+
+**Sampling Variance**:
+$$
+v_{\text{SMD}} = \frac{n_1 + n_2}{n_1 n_2} + \frac{y_{\text{SMD}}^2}{2(n_1 + n_2)}
+$$
+
+**R Code**:
+```{r}
+compute_SMD <- function(m1, m2, sd1, sd2, n1, n2) {
+  pooled_sd <- sqrt(((n1 - 1)*sd1^2 + (n2 - 1)*sd2^2) / (n1 + n2 - 2))
+  smd <- (m1 - m2) / pooled_sd
+  v_smd <- (n1 + n2)/(n1 * n2) + smd^2/(2*(n1 + n2))
+  return(data.frame(y = smd, v = v_smd))
+}
+
+# Example: Compute SMD for two groups
+compute_SMD(m1 = 10, m2 = 8, sd1 = 2, sd2 = 1.5, n1 = 50, n2 = 50)
+```
+
+---
+
+## 3. **Fixed-Effect Model**
+
+- The population effect-sizes across all studies are assumed to be equal or the same. In other words, there is a true effect (in the population, but it is the same for all individual study).
+- The differences in the observed effect-size is simply due to random (sampling) error attached to each individual studies with a variance of $v_i$ (assumed to be known).
+  - $v_i$ is assumed to be known.
+- The fixed-effect model focuses on the studies in the current meta-analysis with the same design, measures, and samples (i.e,. the findings can't be generalized beyond the studies in the meta analysis).
+
+### Model Specification
+
+**Equation**:
+$$
+y_i = \beta_F + e_i, \quad e_i \sim N(0, v_i)
+$$
+
+**SEM Representation**:
+
+- No latent variables.  
+- Fixed parameter: $\beta_F$ (common effect).  This is a.k.a the model implied mean -SEM (or average effect- MA)
+- Known sampling variance $v_i$ not random but fixed (not estimated in the model).
+
+**R Code**:
+
+```{r}
+library(metaSEM)
+library(symSEM)
+model1a <- "ei =~ 1*r                      ## ei = latent variable, yi= indicator
+            r ~ mu*1                       ## mean(yi) = mu
+            r ~~ 0*r                       ## error variance = 0
+            ei ~~ r_v*ei                   ## var(yi) = vi assigned from data
+"
+
+plot(model1a, color = "yellow", sizeInt = 7)
+
+### convert the lavaan model to RAM specification
+### observed variable = "yi
+### std.lv = False: means latent variable is not standardized
+ram1 <- lavaan2RAM(model1a, obs.variables = "r", std.lv = FALSE)
+ram1
+
+## to obtain the model implied mean and variance structures
+impliedS(ram1)
+
+## Fit the model to data
+model_FE <- sem("FIXED", RAM = ram1, data = Jaramillo05)
+summary(model_FE)
+
+plot(model_FE, color = "green", sizeInt = 7, nDigits = 4)
+```
+
+**Interpretation**:
+- `Estimate` = $\hat{\beta}_F$ (common effect).  
+- `Std.Error` = standard error of $\hat{\beta}_F$.
+
+---
+
+## 4. **Random-Effects Model**
+- Population effect-sizes can be different for individual studies.
+- The differences in the observed effect-sizes are due to a combination random (sampling) error with a variance of v (the difference between the observed and population effect-size) and the True difference (or variance) that is., the difference between the studies effect sizes.
+- Findings from the meta analysis can be generalized beyond the studies in the meta-analysis.
+
+### Model Specification
+
+**Equation**:
+$$
+y_i = \beta_R + u_i + e_i, \quad u_i \sim N(0, \tau^2), \quad e_i \sim N(0, v_i)
+$$
+
+**SEM Representation**:
+- **Latent variable**: $f_i \sim N(\beta_R, \tau^2)$ (true effect).  
+- **Observed variable**: $y_i = f_i + e_i$, with $e_i \sim N(0, v_i)$.
+
+**Key Metrics**:
+- $\tau^2$: Between-study variance.  
+- $I^2 = \frac{\tau^2}{\tau^2 + \tilde{v}}$: Proportion of total variance due to heterogeneity.
+
+**R Code**:
+```{r}
+model2 <- " ui =~ 1*r                     ## ui = random effect (latent variable)
+            ui ~~ tau2*ui                 
+            r ~ mu*1                       ## mean(yi) = mu
+            ei =~ 1*r
+            r ~~ 0*r
+            ei =~ r_v*ei
+"
+
+plot(model2, color = "yellow", sizeInt = 7)
+
+### convert the lavaan model to RAM specification
+### observed variable = "yi
+### std.lv = False: means latent variable is not standardized
+ram2 <- lavaan2RAM(model2, obs.variables = "r", std.lv = FALSE)
+ram2
+
+## to obtain the model implied mean and variance structures
+impliedS(ram1)
+
+## Fit the model to data
+model_RE <- sem("Random", RAM = ram2, data = Jaramillo05, intervals.type = "LB")
+summary(model_RE)
+
+plot(model_RE, color = "green", sizeInt = 7, nDigits = 4)
+```
+
+---
+
+## 5. **Mixed-Effects Model**
+- Combines both fixed and random effects.
+- It includes covariates or study characteristics that might explain some of the heterogeneity in effect sizes. 
+- The model can help identify how different factors (such as study design, sample size, or population) influence the effect size.
+
+
+### Model Specification
+
+**Equation**:
+$$
+y_i = \beta_0 + \beta_1 x_i + u_i + e_i, \quad u_i \sim N(0, \tau^2)
+$$
+
+**SEM Representation**:
+- **Latent variable**: $f_i \sim N(\beta_0 + \beta_1 x_i, \tau^2)$.  
+- **Observed variable**: $y_i = f_i + e_i$, with $e_i \sim N(0, v_i)$.
+
+**Interpretation**:
+- $\beta_1$: Change in effect size per unit increase in $x_i$.  
+- $R^2 = \frac{\tau^2_{\text{without } x} - \tau^2_{\text{with } x}}{\tau^2_{\text{without } x}}$: Variance explained by $x_i$.
+
+**R Code**:
+```{r}
+# Add moderator
+data_mixed <- data.frame(
+  y = c(0.5, 0.7, 0.3),
+  v = c(0.1, 0.15, 0.2),
+  year = c(2010, 2015, 2020)  # Moderator
+)
+
+mixed_model <- meta(y = y, v = v, x = year, data = data_mixed, model.name = "Mixed Effects")
+summary(mixed_model)
+
+# Calculate R²
+tau2_without_x <- meta(y = y, v = v, data = data_mixed)$tau2
+tau2_with_x <- mixed_model$tau2
+R2 <- (tau2_without_x - tau2_with_x) / tau2_without_x
+cat("R² =", round(R2, 2))
+```
+
+---
+
+## 6. **Conceptual Deep Dive** {.unnumbered}
+
+:::: {.callout-tip}
+### Why SEM for Meta-Analysis?
+1. **Latent Variables**:  
+   - Separate true effects ($f_i$) from sampling error ($e_i$).  
+   - Example: If $\tau^2 = 0$, all variability is due to sampling error (fixed-effect model).  
+
+2. **Definition Variables**:  
+   - Fix known sampling variances ($v_i$) as constants per study.  
+
+3. **Missing Data**:  
+   - FIML retains studies with incomplete data, unlike traditional listwise deletion.  
+::::
+
+---
+
+## 7. **Summary** {.unnumbered}
+
+| Model              | Equation                          | SEM Component                     | R Function       |
+|--------------------|-----------------------------------|-----------------------------------|------------------|
+| Fixed-Effect       | $y_i = \beta_F + e_i$             | No latent variables               | `meta(y, v)`     |
+| Random-Effects     | $y_i = \beta_R + u_i + e_i$       | Latent $f_i \sim N(\beta_R, \tau^2)$ | `meta(y, v)` |
+| Mixed-Effects      | $y_i = \beta_0 + \beta_1 x_i + u_i + e_i$ | Latent $f_i \sim N(\beta_0 + \beta_1 x_i, \tau^2)$ | `meta(y, v, x)` |
+
+:::: {.callout-important}
+### Advantages of SEM-Based Meta-Analysis
+- **Flexibility**: Extend to multivariate/multilevel models.  
+- **Precision**: Directly model heterogeneity as latent variance.  
+- **Robustness**: Integrate with SEM's estimation tools (e.g., FIML, constraints).  
+::::
+
+```{r}
+library(metaSEM)
+library(symSEM)
+```
+
+
