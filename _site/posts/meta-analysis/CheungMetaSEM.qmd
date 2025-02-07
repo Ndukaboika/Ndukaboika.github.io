@@ -1,0 +1,274 @@
+---
+title: "CheungMetaSEM"
+author: "Nduka Boika"
+format: html
+date: "2025-01-01"
+categories: [Readings and Tutorial]
+editor: visual
+code-fold: true
+---
+## Some notes on Meta-analytic SEM (MASEM)
+Meta-analysis combines and synthesizes findings with statistical model. So, we are basically taking all the studies we have systematically reviewed, extract the results, and quantitaively analyze the data or the result. By result we mean the effect sizes.
+
+Effect-sizes and variance components are the building block of meta-analysis. "Effect-sizes" must satisfy the three conditions below:
+  a. strength - It must tell the magnitude of the relationship or differences between the variables of interest in the model.
+  b. direction - It must tell if the relationship or differences between the variables in the model is positive or negative.
+  c. independence of direction.
+  
+$R^2, \Delta R^2, \eta^2, \omega^2$ are not considered effect sizes because they don't indicate the direction of the magnitude. $\hat{\beta}, \rho , \Delta \mu$, odds ratio can be classified as effect sizes. 
+
+In meta-analytic SEM, raw correlation coefficients $y_r = r$ are used and a sampling variance component ($SE^2_r$) = $(1 - r^2)^2/n-1$
+
+The existing differences in population and observed effect-sizes between studies is termed heterogeneity of effect-sizes ($\tau^2$). ($\tau^2$) cannot be compared across effect-sizes because it is specific to a particular effect-size.
+
+We can quantify the ($\tau^2$) using one of the following formulas below:
+  - $I^2 = Q - (K - 1)/ Q$; where $I^2$ is -ve then it is truncated to zero (0). ?? what is Q and K.
+  - $I^2 = \hat{\tau^2}/(\hat{\tau^2} + \hat{v_i})$ ; where $\hat{v_i}$ = average sampling variance.
+  
+  Interpretation: this is the proportion of total variation due to differences between studies (heterogeneity)- ratio of between studies variances and total variance. (just like in multi-level modeling).
+  
+  Rule of thumb: $I^2 = $ 25%, 50%, and 75% are considered low, moderate, and high heterogeneity respectively. As sample size increases, $\hat{v_i}$ becomes smaller and $I^2$ approaches 1.
+  
+:::{.callout-note}
+$I^2$ = absolute measure of heterogeneity, and $I^2$ = relative measure of heterogeneity dependent on $\hat{v_i}$. Always report both indices.
+:::
+  
+Confidence Intervals 
+
+Generally in Meta Analysis, there are two models: 
+
+1. Fixed-effects model:
+  - The population effect-sizes across all studies are assumed to be equal or the same. That is, each of the studies have the same population effect-size. In other words, there is a true effect (in the population, but it is the same for all individual study).
+  - The differences in the observed effect-size is simply due to random (sampling) error attached to each individual studies with a variance of v.
+  - We can only generalize the finding to the other findings related to the studies in the meta-analysis (that is., studies that have the same research design, measure the same number of variables, and the same samples). In other words, we cannot generalize the findings from the meta-analysis in FE beyond the studies (to a general population).
+  
+2. Random-effects model
+  - Population effect-sizes can be different for individual studies.
+  - The differences in the observed effect-sizes are due to a combination random (sampling) error with a variance of v (the difference between the observed and population effect-size) and the True difference (or variance) that is., the difference between the studies effect sizes.
+  - Findings from the meta analysis can be generalized beyond the studies in the meta-analysis.
+  
+## Replicating Cheungs example
+## Univariate approach
+::: {.panel-tabset}
+
+## Random-effects model
+``` {r}
+## Load the library
+library(metaSEM)
+head(Becker83)
+
+## Random-effects meta-analysis with ML
+summary(meta(y=di, v=vi, data=Becker83))
+```
+
+## Fixed-effects model
+``` {r}
+## Fixed-effects meta-analysis by fixing the heterogeneity variance at 0
+summary( meta(y=di, v=vi, data=Becker83, RE.constraints=0) )
+```
+
+## Mixed-effects model
+```{r}
+## Mixed-effects meta-analysis with "log(items)" as the predictor
+summary( meta(y=di, v=vi, x=log(items), data=Becker83) ) 
+```
+:::
+
+## TSSEM approach
+
+::: {.panel-tabset}
+
+## Random-effects model
+``` {r}
+## Load the library
+library(metaSEM)
+head(Becker83)
+
+## Random-effects meta-analysis with ML
+summary(meta(y=di, v=vi, data=Becker83))
+```
+
+## Fixed-effects model
+``` {r}
+## Fixed-effects meta-analysis by fixing the heterogeneity variance at 0
+summary( meta(y=di, v=vi, data=Becker83, RE.constraints=0) )
+```
+
+## Mixed-effects model
+```{r}
+## Mixed-effects meta-analysis with "log(items)" as the predictor
+summary( meta(y=di, v=vi, x=log(items), data=Becker83) ) 
+```
+
+## Handling missing covariates with FIML
+```{r}
+## Sample data from Tenenbaum and Leaper (2002, Table 1).
+Tenenbaum02 <- Tenenbaum02[, c("r", "v", "Offspring_age", "Year_pub")]
+
+## Set seed for reproducibility
+set.seed(1234567)
+
+## Let's drop 40% in Offspring_age
+missing_per <- 0.4
+
+## MCAR
+index <- round(nrow(Tenenbaum02)*missing_per)
+index <- rep(c(TRUE, FALSE), times=c(index, nrow(Tenenbaum02)-index))
+index <- sample(index)
+my.MCAR <- Tenenbaum02
+my.MCAR[index, "Offspring_age"] <- NA
+my.MCAR$Offspring_age <- scale(my.MCAR$Offspring_age, scale=FALSE)
+my.MCAR$Year_pub <- scale(my.MCAR$Year_pub, scale=FALSE)
+
+my.MCAR
+
+fit <- metaFIML(y=r, v=v, x=Offspring_age, av=Year_pub, data=my.MCAR)
+summary(fit)
+```
+
+:::
+
+
+## TSSEM
+::: {.panel-tabset}
+
+## Random-effects model
+``` {r}
+## Load the library
+library(metaSEM)
+head(Becker83)
+
+## Random-effects meta-analysis with ML
+summary(meta(y=di, v=vi, data=Becker83))
+```
+
+## Fixed-effects model
+``` {r}
+## Fixed-effects meta-analysis by fixing the heterogeneity variance at 0
+summary( meta(y=di, v=vi, data=Becker83, RE.constraints=0) )
+```
+
+## Mixed-effects model
+```{r}
+## Mixed-effects meta-analysis with "log(items)" as the predictor
+summary( meta(y=di, v=vi, x=log(items), data=Becker83) ) 
+```
+:::
+
+## TSSEM approach
+
+::: {.panel-tabset}
+
+## Random-effects model
+``` {r}
+## Load the library
+library(metaSEM)
+head(Becker83)
+
+## Random-effects meta-analysis with ML
+summary(meta(y=di, v=vi, data=Becker83))
+```
+
+## Fixed-effects model
+``` {r}
+## Fixed-effects meta-analysis by fixing the heterogeneity variance at 0
+summary( meta(y=di, v=vi, data=Becker83, RE.constraints=0) )
+```
+
+## Mixed-effects model
+```{r}
+## Mixed-effects meta-analysis with "log(items)" as the predictor
+summary( meta(y=di, v=vi, x=log(items), data=Becker83) ) 
+```
+
+## Handling missing covariates
+```{r}
+## Sample data from Tenenbaum and Leaper (2002, Table 1).
+Tenenbaum02 <- Tenenbaum02[, c("r", "v", "Offspring_age", "Year_pub")]
+
+## Set seed for reproducibility
+set.seed(1234567)
+
+## Let's drop 40% in Offspring_age
+missing_per <- 0.4
+
+## MCAR
+index <- round(nrow(Tenenbaum02)*missing_per)
+index <- rep(c(TRUE, FALSE), times=c(index, nrow(Tenenbaum02)-index))
+index <- sample(index)
+my.MCAR <- Tenenbaum02
+my.MCAR[index, "Offspring_age"] <- NA
+my.MCAR$Offspring_age <- scale(my.MCAR$Offspring_age, scale=FALSE)
+my.MCAR$Year_pub <- scale(my.MCAR$Year_pub, scale=FALSE)
+
+my.MCAR
+```
+:::
+
+
+
+
+
+
+
+#::::: columns
+#::: {.column width="40%"}
+#:::
+
+#::: {.column width="60%"}
+#:::
+#:::::
+
+#::: notes
+#No notes
+#:::
+
+#::: aside
+#Some additional commentary of more peripheral interest.
+#:::
+
+
+
+```{r}
+#| echo: false
+#| output-location: slide
+library(ggplot2)
+ggplot(airquality, aes(Temp, Ozone)) + 
+  geom_point() + 
+  geom_smooth(method = "loess")
+```
+
+#::: panel-tabset
+### Tab A
+
+```{r}
+#| echo: false
+#| output-location: slide
+library(ggplot2)
+ggplot(airquality, aes(Temp, Ozone)) + 
+  geom_point() + 
+  geom_smooth(method = "loess")
+```
+
+### Tab B
+
+Content for `Tab B`
+:::
+
+##  {background-color="aquamarine"}
+
+(A slide with no title)
+
+##  {background-color="black" background-image="https://placekitten.com/100/100" background-size="100px" background-repeat="repeat"}
+
+(Another slide with no title)
+
+## Slide Title {background-gradient="linear-gradient(to bottom, #283b95, #17b2c3)"}
+
+## Slide Title {background-gradient="radial-gradient(#283b95, #17b2c3)"}
+
+[^1]: A footnote
+
+
+
+

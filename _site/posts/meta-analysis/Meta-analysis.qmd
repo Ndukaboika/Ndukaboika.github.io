@@ -1,0 +1,9 @@
+---
+title: "Meta-analysis"
+author: "Nduka Boika"
+format: html
+date: "2025-01-01"
+categories: [Readings and Tutorial]
+---
+
+**Resources:** [meta-guide](https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R)
