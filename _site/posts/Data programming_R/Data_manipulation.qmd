@@ -1,5 +1,5 @@
 ---
-title: "Meta-analysis"
+title: "Data manipulation"
 author: "Nduka Boika"
 format: html
 date: "2025-01-01"
@@ -8,11 +8,10 @@ categories: [R Tutorial]
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+#styler:::style_file(Data_manipulation.qmd)
 ```
 
-#### Crystal Lewis
-
-#### 11/12/2019
+#### Nduka Boika
 
 #### Install and call packages we need
 
@@ -73,7 +72,7 @@ knitr::kable(head(Demofinal, 3))
 Read in our demographics file using `read_csv`
 
 ```{r, results='hide', warning=FALSE, message=FALSE}
-Demo <- read_csv('https://raw.githubusercontent.com/Cghlewis/R-Ladies-STL-Cleaning-Data-R/master/Data/Demographics.csv', na="*")
+Demo <- read_csv('https://raw.githubusercontent.com/Cghlewis/R-Ladies-STL-Cleaning-Data-R/master/Data/Demographics.csv', na = "*")
 ```
 
 Drop StudentName and ZipCode using `select`
@@ -81,7 +80,7 @@ Drop StudentName and ZipCode using `select`
 ```{r, warning=FALSE, message=FALSE}
 
 names(Demo)
-Demo <- Demo%>%select(-`Student Name`, -ZipCode)
+Demo <- Demo%>%select(-"Student Name", -"ZipCode")
 ```
 
 Rename Columns using `setNames`
@@ -133,7 +132,7 @@ Change Fall_Attendance class into numeric using `as.numeric` and remove the % us
 
 head(as.data.frame(Demo),2)
 class(Demo$Fall_Attendance)
-Demo <- Demo %>% mutate(Fall_Attendance=as.numeric(str_remove(Fall_Attendance,"%")))
+Demo <- Demo %>% mutate(Fall_Attendance=as.numeric(str_remove('Fall_Attendance',"%")))
 head(as.data.frame(Demo),2)
 ```
 
