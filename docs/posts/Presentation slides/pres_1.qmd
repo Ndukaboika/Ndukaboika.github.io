@@ -14,10 +14,7 @@ execute:
  cache: true
  freeze: false
 editor: visual
-
 ---
-
-
 
 ```{r echo: false}
 #| message: false
@@ -27,56 +24,56 @@ library(metaSEM)
 library(symSEM)
 ```
 
+------------------------------------------------------------------------
 
----
+## **Background** {.unnumbered}
 
-##  **Background** {.unnumbered}
-
-:::: {.callout-note}
+::: callout-note
 ### Conceptualization of Meta-Analysis as SEM
 
-- Treats studies in a meta-analysis as subjects in SEM.
-- Observed effect sizes correspond to observed variables; population (true) effect sizes correspond to latent variables.
-- Mean and variance of effect sizes equate to average effect and heterogeneity variance in meta-analysis.
-- Sampling variance is analogous to measurement error in SEM.
-- Study characteristics (covariates) can predict effect sizes in cases of excess heterogeneity.
+-   Treats studies in a meta-analysis as subjects in SEM.
 
-- **Advantages**:  
-  - Handle missing data via **Full Information Maximum Likelihood (FIML)**.  
-  - Fix known sampling variances using **definition variables**.  
-  - Visualize models with path diagrams (e.g., latent heterogeneity).
-::::
+-   Observed effect sizes correspond to observed variables; population (true) effect sizes correspond to latent variables.
 
----
+-   Mean and variance of effect sizes equate to average effect and heterogeneity variance in meta-analysis.
+
+-   Sampling variance is analogous to measurement error in SEM.
+
+-   Study characteristics (covariates) can predict effect sizes in cases of excess heterogeneity.
+
+-   **Advantages**:
+
+    -   Handle missing data via **Full Information Maximum Likelihood (FIML)**.\
+    -   Fix known sampling variances using **definition variables**.\
+    -   Visualize models with path diagrams (e.g., latent heterogeneity).
+:::
+
+------------------------------------------------------------------------
 
 ## **Computing Effect Sizes**
-:::: {.callout-note}
-### Definition of Effect Size
-  - Represents the magnitude of a phenomenon in quantitative terms.
-  - Can be standardized (e.g., Cohen’s d, correlation coefficient) or unstandardized (e.g., raw mean difference).
-::::
 
-- The generic effect-size for each `study i` is de  notated as $y_i$ and is represented as:
-                            $$y_i = f_i + e_i$$
-                            $y_i$ = sample (observed) effect size for the ith study,
-                            $f_i$ = population (true) effect size,
-                            $e_i$ = error term in the observed effect-size,
-                            $var(e_i)$ = a.k.a $v_i$ sampling variance (usually known in MA)
-                            
+::: callout-note
+### Definition of Effect Size
+
+-   Represents the magnitude of a phenomenon in quantitative terms.
+-   Can be standardized (e.g., Cohen’s d, correlation coefficient) or unstandardized (e.g., raw mean difference).
+:::
+
+-   The generic effect-size for each `study i` is de notated as $y_i$ and is represented as: $$y_i = f_i + e_i$$ $y_i$ = sample (observed) effect size for the ith study, $f_i$ = population (true) effect size, $e_i$ = error term in the observed effect-size, $var(e_i)$ = a.k.a $v_i$ sampling variance (usually known in MA)
+
 #### Standardized Mean Difference (SMD)
 
-**Equations**:
-$$
+**Equations**: $$
 y_{\text{SMD}} = \frac{\bar{X}_1 - \bar{X}_2}{S_{\text{pooled}}}, \quad 
 S_{\text{pooled}} = \sqrt{\frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1 + n_2 - 2}}
 $$
 
-**Sampling Variance**:
-$$
+**Sampling Variance**: $$
 v_{\text{SMD}} = \frac{n_1 + n_2}{n_1 n_2} + \frac{y_{\text{SMD}}^2}{2(n_1 + n_2)}
 $$
 
 **R Code**:
+
 ```{r}
 compute_SMD <- function(m1, m2, sd1, sd2, n1, n2) {
   pooled_sd <- sqrt(((n1 - 1)*sd1^2 + (n2 - 1)*sd2^2) / (n1 + n2 - 2))
@@ -89,77 +86,73 @@ compute_SMD <- function(m1, m2, sd1, sd2, n1, n2) {
 compute_SMD(m1 = 10, m2 = 8, sd1 = 2, sd2 = 1.5, n1 = 50, n2 = 50)
 ```
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
+## Univariate approach
 
-## Univariate approach 
 #### **Fixed-Effect Model**
 
-- The population effect-sizes across all studies are assumed to be equal or the same. In other words, there is a true effect (in the population, but it is the same for all individual study).
-- The differences in the observed effect-size is simply due to random (sampling) error attached to each individual studies with a variance of $v_i$ (assumed to be known).
-  - $v_i$ is assumed to be known.
-- The fixed-effect model focuses on the studies in the current meta-analysis with the same design, measures, and samples (i.e,. the findings can't be generalized beyond the studies in the meta analysis).
+-   The population effect-sizes across all studies are assumed to be equal or the same. In other words, there is a true effect (in the population, but it is the same for all individual study).
+-   The differences in the observed effect-size is simply due to random (sampling) error attached to each individual studies with a variance of $v_i$ (assumed to be known).
+    -   $v_i$ is assumed to be known.
+-   The fixed-effect model focuses on the studies in the current meta-analysis with the same design, measures, and samples (i.e,. the findings can't be generalized beyond the studies in the meta analysis).
 
 ### Model Specification
 
-**Equation**:
-$$
+**Equation**: $$
 y_i = \mu + e_i, \quad e_i \sim N(0, v_i)
 $$
 
 **SEM Representation**:
 
-- No latent variables because $\mu_i$.  
-- Fixed parameter: $\mu$ (common effect).  This is a.k.a the model implied mean -SEM (or average effect across studies- MA)
-- Known sampling variance $v_i$ not random but fixed (not estimated in the model).
+-   No latent variables because $\mu_i$.\
+-   Fixed parameter: $\mu$ (common effect). This is a.k.a the model implied mean -SEM (or average effect across studies- MA)
+-   Known sampling variance $v_i$ not random but fixed (not estimated in the model).
 
-
-:::: {.callout-note}
+::: callout-note
 ### Dataset
-- Data is from Jaramillo et al 2005
-- contains 61 subjects -SEM (61 studies- MA)
-- $y_i$ = observed variable- SEM (effect- MA)
-- $e_i$ = sampling error and is specified as a latent variable
-- $v_i$ = sampling variance across study and is fixed to individual study or subject.
-::::
 
-:::: {.callout-note}
+-   Data is from Jaramillo et al 2005
+-   contains 61 subjects -SEM (61 studies- MA)
+-   $y_i$ = observed variable- SEM (effect- MA)
+-   $e_i$ = sampling error and is specified as a latent variable
+-   $v_i$ = sampling variance across study and is fixed to individual study or subject.
+:::
+
+::: callout-note
 ### Work-flow
-- specifying the model using lavaan syntax
-- the proposed model is converted to RAM specification using lavaan2RAM function (the std.lv =False because we dont want to standardize the sampling variance to 1)
-    - RAM = Reticular Action Model
-- the data is fitted using sem function
-- model is displayed using the plot function
-::::
 
-:::: {.callout-note}
+-   specifying the model using lavaan syntax
+-   the proposed model is converted to RAM specification using lavaan2RAM function (the std.lv =False because we dont want to standardize the sampling variance to 1)
+    -   RAM = Reticular Action Model
+-   the data is fitted using sem function
+-   model is displayed using the plot function
+:::
+
+::: callout-note
 ### model specification fixed-effect
-- Latent variable
-  - $e_i$ =~ 1*$y_i$
-  - Declares $e_i$ as a latent variable with $y_i$ as its sole observed indicator.
-  - The factor loading (regression coefficient) of $y_i$ on $e_i$ is fixed to 1, scaling the latent variable $e_i$ to the same units as $y_i$.
 
-- Mean Structure:
-  - $y_i$ ~ $\mu$*1
-  - Specifies that the mean of $y_i$ is explicitly modeled as mu.
-  - This implies $\mu$ is an estimated parameter representing the average value of $y_i$
-
-- Residual Variance of Observed Variable:
-  - $y_i$ ~~ 0*$y_i$
-  - Sets the residual (error) variance of $y_i$ to 0.
-  - This means all variance in $y_i$ is fully explained by the latent variable $e_i$ (no measurement error).
-  - $y_i$ is treated as a perfect indicator of $e_i$.
-
-- Variance of Latent Variable:
-  - $e_i$ ~~ data.vi*$e_i$
-  - Assigns the variance of ei to values provided in the dataset’s vi column.
-  - Instead of estimating the latent variable’s variance, it uses case-specific pre-defined values (e.g., known sampling variances in meta-analysis or heteroscedasticity adjustments).
-  - This allows the model to incorporate external information about variability (e.g., study-specific variances in meta-analytic models)
-
-::::
+-   Latent variable
+    -   $e_i$ =\~ 1\*$y_i$
+    -   Declares $e_i$ as a latent variable with $y_i$ as its sole observed indicator.
+    -   The factor loading (regression coefficient) of $y_i$ on $e_i$ is fixed to 1, scaling the latent variable $e_i$ to the same units as $y_i$.
+-   Mean Structure:
+    -   $y_i$ \~ $\mu$\*1
+    -   Specifies that the mean of $y_i$ is explicitly modeled as mu.
+    -   This implies $\mu$ is an estimated parameter representing the average value of $y_i$
+-   Residual Variance of Observed Variable:
+    -   $y_i$ \~\~ 0\*$y_i$
+    -   Sets the residual (error) variance of $y_i$ to 0.
+    -   This means all variance in $y_i$ is fully explained by the latent variable $e_i$ (no measurement error).
+    -   $y_i$ is treated as a perfect indicator of $e_i$.
+-   Variance of Latent Variable:
+    -   $e_i$ \~\~ data.vi\*$e_i$
+    -   Assigns the variance of ei to values provided in the dataset’s vi column.
+    -   Instead of estimating the latent variable’s variance, it uses case-specific pre-defined values (e.g., known sampling variances in meta-analysis or heteroscedasticity adjustments).
+    -   This allows the model to incorporate external information about variability (e.g., study-specific variances in meta-analytic models)
+:::
 
 **R Code**:
-
 
 ```{r}
 ## Prepare a sample data
@@ -171,7 +164,9 @@ dat1 <- data.frame(yi=Jaramillo05$r,
 ```
 
 ## Models without any external variables
+
 ### Fixed-effect model
+
 ```{r}
 ## Fixed-effect model with a latent variable ei
 m1a <- "ei =~ 1*yi           ## e as a latent variable and yi is its indicator
@@ -205,54 +200,51 @@ summary(fit1)
 plot(fit1, color = "green", sizeInt = 7, nDigits = 4)
 ```
 
-:::: {.callout-note}
+::: callout-note
 ### Result
-- $\hat{\mu}$ = .1938, [.1782, .2093]
-::::
 
+-   $\hat{\mu}$ = .1938, \[.1782, .2093\]
+:::
 
--------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ## **Random-Effects Model**
-- Population effect-sizes can be different for individual studies.
-- The differences in the observed effect-sizes are due to a combination random (sampling) error with a variance of v (the difference between the observed and population effect-size) and the True difference (or variance) that is., the difference between the studies effect sizes.
-- Findings from the meta analysis can be generalized beyond the studies in the meta-analysis.
+
+-   Population effect-sizes can be different for individual studies.
+-   The differences in the observed effect-sizes are due to a combination random (sampling) error with a variance of v (the difference between the observed and population effect-size) and the True difference (or variance) that is., the difference between the studies effect sizes.
+-   Findings from the meta analysis can be generalized beyond the studies in the meta-analysis.
 
 ### Model Specification
 
-**Equation**:
-$$
+**Equation**: $$
 y_i = \mu + u_i + e_i, \quad u_i \sim N(0, \tau^2), \quad e_i \sim N(0, v_i)
 $$
 
-:::: {.callout-note}
+::: callout-note
 ### Model Specification Random Effect
-- Latent Variable (Random Effect)
-  - ui =~ 1*yi
-  - Declares ui as a latent variable (random effect) with yi as its observed indicator.
-  - The factor loading is fixed to 1, linking ui and yi on the same scale.
-  
-- Variance of the Random Effect:
-  - ui ~~ tau2*ui
-  - Specifies that the variance of ui (denoted as tau2) is estimated from the data.
-  - tau2 represents the between-group or between-study heterogeneity (e.g., between-study variance in meta-analysis).
 
-- Mean Structure:
-  - yi ~ mu*1
-  - Models the mean of yi as mu, an estimated parameter.
-  - mu represents the overall average effect (e.g., the pooled effect in meta-analysis).
-
-- Residual Variance of Observed Variable:
-  - yi ~~ data.vi*yi
-  - Sets the residual variance of yi to pre-specified values from the dataset’s vi column.
-  - This represents known measurement error variances (e.g., sampling variances in meta-analysis).
-::::
-
-
+-   Latent Variable (Random Effect)
+    -   ui =\~ 1\*yi
+    -   Declares ui as a latent variable (random effect) with yi as its observed indicator.
+    -   The factor loading is fixed to 1, linking ui and yi on the same scale.
+-   Variance of the Random Effect:
+    -   ui \~\~ tau2\*ui
+    -   Specifies that the variance of ui (denoted as tau2) is estimated from the data.
+    -   tau2 represents the between-group or between-study heterogeneity (e.g., between-study variance in meta-analysis).
+-   Mean Structure:
+    -   yi \~ mu\*1
+    -   Models the mean of yi as mu, an estimated parameter.
+    -   mu represents the overall average effect (e.g., the pooled effect in meta-analysis).
+-   Residual Variance of Observed Variable:
+    -   yi \~\~ data.vi\*yi
+    -   Sets the residual variance of yi to pre-specified values from the dataset’s vi column.
+    -   This represents known measurement error variances (e.g., sampling variances in meta-analysis).
+:::
 
 **R Code**:
 
 ### Random-effects model
+
 ```{r}
 ## Random-effects model
 m2 <- "ui =~ 1*yi          ## ui is the random effect
@@ -279,31 +271,30 @@ summary(fit2)
 plot(fit2, color="green", sizeInt = 7, nDigits = 4)
 ```
 
-:::: {.callout-note}
+::: callout-note
 ### Result
-- $\hat{\mu}$ = .1866, [.1479, .2251] and $\hat{\tau}$ = 0.0170, [0.0106, 0.0276]
-::::
+
+-   $\hat{\mu}$ = .1866, \[.1479, .2251\] and $\hat{\tau}$ = 0.0170, \[0.0106, 0.0276\]
+:::
 
 ```{r}
 anova(fit1, fit2)
 ```
----
+
+------------------------------------------------------------------------
 
 ## **Summary** {.unnumbered}
 
-| Model              | Equation                          | SEM Component                     | R Function       |
-|--------------------|-----------------------------------|-----------------------------------|------------------|
-| Fixed-Effect       | $y_i = \beta_F + e_i$             | No latent variables               | `meta(y, v)`     |
-| Random-Effects     | $y_i = \beta_R + u_i + e_i$       | Latent $f_i \sim N(\beta_R, \tau^2)$ | `meta(y, v)` |
-| Mixed-Effects      | $y_i = \beta_0 + \beta_1 x_i + u_i + e_i$ | Latent $f_i \sim N(\beta_0 + \beta_1 x_i, \tau^2)$ | `meta(y, v, x)` |
+| Model | Equation | SEM Component | R Function |
+|----|----|----|----|
+| Fixed-Effect | $y_i = \beta_F + e_i$ | No latent variables | `meta(y, v)` |
+| Random-Effects | $y_i = \beta_R + u_i + e_i$ | Latent $f_i \sim N(\beta_R, \tau^2)$ | `meta(y, v)` |
+| Mixed-Effects | $y_i = \beta_0 + \beta_1 x_i + u_i + e_i$ | Latent $f_i \sim N(\beta_0 + \beta_1 x_i, \tau^2)$ | `meta(y, v, x)` |
 
-
-
-:::: {.callout-important}
+::: callout-important
 ### Advantages of SEM-Based Meta-Analysis
-- **Flexibility**: Extend to multivariate/multilevel models.  
-- **Precision**: Directly model heterogeneity as latent variance.  
-- **Robustness**: Integrate with SEM's estimation tools (e.g., FIML, constraints).  
-::::
 
-
+-   **Flexibility**: Extend to multivariate/multilevel models.\
+-   **Precision**: Directly model heterogeneity as latent variance.\
+-   **Robustness**: Integrate with SEM's estimation tools (e.g., FIML, constraints).\
+:::
