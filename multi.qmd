@@ -1,0 +1,54 @@
+---
+title: "Structural Equation Modeling Based Meta-Analysis - multivarate"
+Author: Mike Cheung
+format:
+  html: 
+    #incremental: true  
+    smaller: true
+    scrollable: true
+    theme: sky #solarized
+    #logo: logo.png
+    footer: "Nduka Boika"
+    #chalkboard: true
+    slide-number: true
+    #show-slide-number: print
+    embed-resources: true
+    toc: true
+    toc-location: left
+editor: visual
+---
+
+## Multivariate approach
+- When the research questions become more complicated, a single effect-size may not be sufficient to summarize the effect in the pry studies. Multiple effect sizes are required to quantify the effects of the study. 
+-   An extension of the univariate approach
+-   The data for the analysis is the form of a vector or matrix
+-   still the same convention as the univariate approach in terms of:
+    -   sources of dependency (variation)
+        -   from the samples in the primary study (sampling variance) in form of the covariance matrix - which is already known from the primary study.
+        -   between study dependence which is represented by the between study variance component $(\tau^2)$.
+            -   it is assumed that the true effects-sizes between the studies maybe correlated.
+            -   given one study, it is difficult to estimate this dependence
+
+## Multivariate ffect-size equations
+
+- MASEM combines the ideas of MA and SEM 
+- Test Structural Equation models on the pooled correlation (covariance) matrix
+- Two stages (TSSEM)
+  - pool the correlation matrix together
+  - pooled correlation matrix is used to fit the SEM
+- The metaSEM package handles both fixed- or random-effects models automatically.
+
+-   TSSEM uses Maximum Likelihood (ML) to obtain the pooled correlation matrix and the heterogeneity test for both the fixed- and random- effects model.
+- The parameter estimates are unbiased
+- effective when correlation estimates are MCAR or MAR.
+
+###Fixed-effects model
+- Assumes common population (covariance) correlation matrices for all studies
+- If an ith study has a covariance matrix, the matrix can be decomposed into a product of the matrices of correlations and standard deviations.
+  $\boldsymbol{\sum_i}(\theta) = \boldsymbol{D_i} \boldsymbol{\rho_i} \boldsymbol{D_i}$ 
+  $\boldsymbol{\sum_i}$ = model implied covariance matrix.
+  $\boldsymbol{D_i}$ = diagonal matrix of standard deviations.
+  $\boldsymbol{\rho_i}$ = correlation matrix in the i_th study.
+- A constraint is imposed such that 
+$\boldsymbol{\rho} = \boldsymbol{\rho_1}=\boldsymbol{\rho_2}=\boldsymbol{\rho_3}...=\boldsymbol{\rho_k}$
+- $\boldsymbol{D_i}$ may vary across studies

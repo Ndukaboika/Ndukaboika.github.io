@@ -43,5 +43,23 @@
   },
   "posts/meta-analysis/Meta-analysis.qmd": {
     "Meta-analysis.html": "85c0af95"
+  },
+  "multi.qmd": {
+    "multi.html": "9280e50d"
+  },
+  "posts/statistical-learning/ML_R.Rmd": {
+    "ML_R.html": "fd6f5622"
+  },
+  "posts/meta-analysis/Untitled.qmd": {
+    "Untitled.html": "94ca958d"
+  },
+  "posts/Presentation slides/paper1_presentation.qmd": {
+    "paper1_presentation.html": "732f057c"
+  },
+  "posts/Presentation slides/CopyOfpres_1.qmd": {
+    "CopyOfpres_1.html": "d668abcb"
+  },
+  "posts/Data programming_R/Data_manipulation.qmd": {
+    "Data_manipulation.html": "e97d0197"
   }
 }

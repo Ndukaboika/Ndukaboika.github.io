@@ -1,0 +1,162 @@
+---
+title: "Structural Equation Modeling Based Meta-Analysis - multivarate"
+Author: Mike Cheung
+format:
+  html: 
+    #incremental: true  
+    smaller: true
+    scrollable: true
+    theme: sky #solarized
+    #logo: logo.png
+    footer: "Nduka Boika"
+    #chalkboard: true
+    slide-number: true
+    #show-slide-number: print
+    embed-resources: true
+    toc: true
+    toc-location: left
+editor: visual
+---
+
+## Multivariate approach
+- When the research questions become more complicated, a single effect-size may not be sufficient to summarize the effect in the pry studies. Multiple effect sizes are required to quantify the effects of the study. 
+-   An extension of the univariate approach
+-   The data for the analysis is the form of a vector or matrix
+-   still the same convention as the univariate approach in terms of:
+    -   sources of dependency (variation)
+        -   from the samples in the primary study (sampling variance) in form of the covariance matrix - which is already known from the primary study.
+        -   between study dependence which is represented by the between study variance component $(\tau^2)$.
+            -   it is assumed that the true effects-sizes between the studies maybe correlated.
+            -   given one study, it is difficult to estimate this dependence
+
+--------------------
+
+## Multivariate ffect-size equations
+- MASEM combines the ideas of MA and SEM 
+- Test Structural Equation models on the pooled correlation (covariance) matrix
+- Two stages (TSSEM)
+  - pool the correlation matrix together
+  - pooled correlation matrix is used to fit the SEM
+- The metaSEM package handles both fixed- or random-effects models automatically.
+
+-   TSSEM uses Maximum Likelihood (ML) to obtain the pooled correlation matrix and the heterogeneity test for both the fixed- and random- effects model.
+- The parameter estimates are unbiased
+- effective when correlation estimates are MCAR or MAR.
+
+---------------------
+
+### Stage 1
+
+#### Fixed-effects model
+
+- Assumes common population (covariance) correlation matrices for all studies
+- If an ith study has a covariance matrix, the matrix can be decomposed into a product of the matrices of correlations and standard deviations.
+
+  $$\boldsymbol{\sum_i}(\theta) = \boldsymbol{D_i} \boldsymbol{\rho_i} \boldsymbol{D_i}$$
+
+  $\boldsymbol{\sum_i}$ = model implied covariance matrix.
+  $\boldsymbol{D_i}$ = diagonal matrix of standard deviations.
+  $\boldsymbol{\rho_i}$ = correlation matrix in the i_th study.
+- A constraint is imposed such that 
+
+  $\boldsymbol{\rho} = \boldsymbol{\rho_1}=\boldsymbol{\rho_2}=\boldsymbol{\rho_3}...=\boldsymbol{\rho_k}$
+- $\boldsymbol{D_i}$ may vary across studies, however if you assume common covariance (homogeneity of variance) , we can just constrain the matrices.
+          $$\boldsymbol{D} = \boldsymbol{D_1}=\boldsymbol{D_2}=\boldsymbol{D_3}...=\boldsymbol{D_k}$$
+
+- A likelihood ratio test (LR) can be used to test the null hypothesis homogeneity of correlation matrices.
+
+- Various goodness-of-fit may also be used to evaluate the homogeneity of correlation matrices.
+
+--------------------------
+
+### Random-effects model
+- The assumption of homogeneity of correlation matrices may not be reasonable.
+- The pry studies are independently conducted by different researchers, so
+  - samples 
+  - measures 
+  - researches focuses are likely different.
+-  more appropriate to analyze the data.
+- Using this Random-effects model, we treat the correlation matrices as vectors of multivariate effect-sizes (multiple variables).
+- Let $\boldsymbol{r_i} = vechs(\boldsymbol{R_i})$ be the $p(p-1)/2$ X 1 vector of a sample correlation for p variables.
+  - e.g., if p = 3 (variables), then the number of unique element in the correlation matrix $(\boldsymbol{R_i})$ will be 3(3-1)/2 = 3.
+- If dealing with a covariance matrix, the number of unique elements will be                  $p(p+1)/2$ = $\boldsymbol{s_i} = vechs(\boldsymbol{S_i})$
+- The model for the sample correlation vector =
+        $\boldsymbol{r_i} = {\rho_R} + \boldsymbol{U_i} + \boldsymbol{e_i}$
+        ${\rho_R}$ = $p(p-1)/2$ X 1 average true correlation vector
+        $Var(\boldsymbol{U_i})$ = between study variance component called Tau-squared $(\boldsymbol{\tau^2})$
+        $Var(\boldsymbol{e_i})$ =  sampling covaraiance matrix.
+
+::: callout-note
+
+$\boldsymbol{e_i} ~ N(0, \boldsymbol{V_i)$
+
+$\boldsymbol{U_i} ~ N(0, \boldsymbol{\tau^2})$
+
+$\boldsymbol{\tau^2}$ can be `non-positive` definite if we have many variables(effect-sizes), and not enough data. Thus, the results cannot be trusted.
+
+The solution is to fix $\boldsymbol{\tau^2}$ to a diagonal matrix instead of a symmetric matrix. (specify the argument` RE.type="Diag" `in the TSSEM function)
+:::
+
+
+--------------------------
+
+### Stage 2
+
+- In the stage 1 analysis a vector of pooled correlations $\boldsymbol{r}$ and its asymptotic covariance matrix $\boldsymbol{V}$ are obtained.
+- note that $\boldsymbol{\tau^2}$ is not directly involved in fitting the correlation structure in this stage. yet we still have to take it into account to account for the heterogeneity of the random effects.
+- It is incorrect to 
+  - use a pooled correlation matrix as if it were an observed correlation matrix to fit SEM (Cheung and Chan 2005b)
+    - the elements of the pooled correlation matrix are usually based on different studies,  sample sizes
+  - analyze the pooled correlation matrix, and to use it as if it were a covariance matrix.
+  - Cudeck (1989) warned about the problem of analyzing correlation matrix instead of covariance matrix in pry research application of SEM.
+    - specifically, the chi-square statistics and(or) the SEs of the parameter estimates may be incorrect.
+- The issue above is addressed in the TSSEM approach which uses the WLS estimation to fit the propsed model in this stage.
+- This is done by minimizing the fit function 
+              ${F}\_wls = (\boldsymbol{r} - \boldsymbol{r}\_model)^T {V}^-1 (\boldsymbol{r} - \boldsymbol{r}\_model)$
+              $\boldsymbol{r}$ = vector containing the lower triangular element of the sample correlation matrix
+              $\boldsymbol{r}\_model$ = vector containing the lower triangular element of the implied covariance matrix
+              ${V}^-1$ = the asymptotic covariance matrix from the first stage.
+- LR statistics is used to test the appropriateness of the structural model, and SE is used to test the significance of the parameter estimates.  
+
+
+-------------------
+
+## R illustration
+
+### Digman data set
+- The digman (1997) dataset reported a second-order factor analysis on a five-factor model with 14 studies.
+- Two factors are 
+    - Alpha ~ agreeableness (A), conscientiousness (C), and emotional stability (ES)
+    - Beta ~ extroversion (E), and intellect (I).
+- We use the TSSEM approach to test the proposed model.
+- Correlation matrices (data) are stored in `Digman97$data`
+- sample sizes are stored in `Digman97$n`
+
+
+```{r}
+library(metaSEM) # load package
+head(Digman97$data) # first six rows of the data (correlation matrices from 6 studies)
+head(Digman97$n) # sample sizes from the above matrices.
+```
+
+#### Stage 1
+- use the TSSEM1() function to pool the correlation matrices together. For the fixed-effects model in this first stage, just specify the `method="FEM"` in the arguement.
+
+```{r}
+fixed1 <- tssem1(Digman97$data, Digman97$n, method = "FEM") # pooling the correlation matrices together
+summary(fixed1) # summary of the result including the fit indices
+```
+
+- We want to test for the homogeneity of correlation matrices in this stage 1.
+  - $\chi^2(df= 130, N= 4,496) = 1505.4443, p = .0000, CFI = .6824, TLi = .6580, SRMR= .1621, RMSEA = .1815$ 
+  - The p-value is less than .05 indicating that the correlation matrices are different from from one another, violating the homogeneity of correlation matrix assumption. This tells us that the random effects model is more suitable for the analysis.
+  - The TLI and CFI values are smaller than the threshold of >.96
+  - RMSEA and SRMR values are larger than the recommended threshold of <.08
+  
+```{r}
+coef(fixed1) # extract the pooled correlation matrix
+```
+
+
+#### Stage 2
+- We want to fit the Structural equation model. In the Digman study the model is a factor analytic model

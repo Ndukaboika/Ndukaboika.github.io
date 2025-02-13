@@ -2,9 +2,7 @@
 title: "Meta-analytic structural equation modeling: a primer"
 author: "Zhen-Wei Dai"
 #format: revealjs
-format: 
-  pptx:
-    reference-doc: template.pptxpptx
+format: html
   
     
 editor: visual

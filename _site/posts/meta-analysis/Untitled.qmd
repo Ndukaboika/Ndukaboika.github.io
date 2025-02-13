@@ -2,7 +2,7 @@
 title: "Structural Equation Modeling Based Meta-Analysis"
 Author: Mike Cheung
 format:
-  revealjs: 
+  html: 
     #incremental: true  
     smaller: true
     scrollable: true
@@ -13,55 +13,18 @@ format:
     slide-number: true
     #show-slide-number: print
     embed-resources: true
-    
+    toc: true
+    toc-location: left
 editor: visual
 ---
 
+### Loading the necessary packages for conducting meta-analysis
 
-## Intro
-#### Separation of SEM and Meta-Analysis
+```{r}
+#library(meta)
+#library(metafor)
+library(tidyverse)
+library(dmetar)
 
-- Traditionally treated as distinct fields in textbooks, software, training, and journals.
-- Researchers may not be aware of benefits and techniques from the other area.
-
-####Integration of Meta-Analysis into SEM
-
-- Offers new research opportunities for statistical methods and applications.
-- SEM provides a flexible framework for modeling meta-analytic data.
-
-#### Conceptualization of Meta-Analysis as SEM
-
-- Treats studies in a meta-analysis as subjects in SEM.
-- Observed effect sizes correspond to observed variables; population (true) effect sizes correspond to latent variables.
-- Mean and variance of effect sizes equate to average effect and heterogeneity variance in meta-analysis.
-- Sampling variance is analogous to measurement error in SEM.
-- Study characteristics (covariates) can predict effect sizes in cases of excess heterogeneity.
-- Study characteristics are referred to as covariates (instead of moderators) to avoid confusion.
-
-
-
-- Each ffect size (MA) has its own sampling error just like each subject or individual (SEM) has its own measurement error.
-
---------------------------------------------------------------------------------------------------
-
-## EFfect sizes in Meta-Analysis
-
-- primary data in meta analysis.
-- Represents the magnitude of a phenomenon in quantitative terms.
-- Can be standardized (e.g., Cohen’s d, correlation coefficient) or unstandardized (e.g., raw mean difference).
-- The generic effect-size for each `study i` is notated as $y_i$ and is represented as:
--                             $$y_i = f_i + e_i$$
-                              
--                           $y_i$ = sample (observed) effect size for the ith study
-                            $f_i$ = population (true) effect size
-                            $e_i$ = error term in the observed effect-size
-                            $var(e_i)$ = a.k.a $v_i$ sampling variance (usually known in MA)
-
-#### Choosing Appropriate Effect Sizes
-
-- Effect sizes should clearly indicate direction; variance-explained metrics (e.g $R^2, \eta^2, \Omega^2$ are rarely used.
-- Small Sample Bias: Some estimators (e.g., standardized mean difference, SMD) are biased in small samples. Correction factors (e.g., Hedges' correction) may be applied.
-- Distributional Assumption: Effect sizes are assumed to follow a normal distribution, but they only approximate normality asymptotically, requiring a reasonable sample size.
-- Variance Stabilizing Transformations: 
-  - Log transformation for Relative Risk (RR) and Odds Ratio (OR).
-  - Fisher’s z-transformation for correlation coefficients to normalize distributions.
+glimpse(SuicidePrevention.xlsx)
+```

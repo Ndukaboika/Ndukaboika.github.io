@@ -1,0 +1,15 @@
+{
+  "hash": "9d5cab134b60a7d652bc244808f9d95a",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"ML_R\"\noutput: html_document\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(dplyr)       # for data manipulation\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n\nAttaching package: 'dplyr'\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stderr}\n\n```\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stderr}\n\n```\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n```\n\n\n:::\n\n```{.r .cell-code}\nlibrary(ggplot2)     # for data visualization\n\n# Modeling packages\nlibrary(cluster)     # for general clustering algorithms\nlibrary(factoextra)  # for visualizing cluster results\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nWelcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa\n```\n\n\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\names_scale <- AmesHousing::make_ames() %>%\n  select_if(is.numeric) %>%  # select numeric columns\n  select(-Sale_Price) %>%    # remove target column\n  mutate_all(as.double) %>%  # coerce to double type\n  scale()                    # center & scale the resulting columns\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\n# For reproducibility\nset.seed(123)\n\n# Dissimilarity matrix\nd <- dist(ames_scale, method = \"euclidean\")\n\n# Hierarchical clustering using Complete Linkage\nhc1 <- hclust(d, method = \"complete\" )\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\n# For reproducibility\nset.seed(123)\n\n# Compute maximum or complete linkage clustering with agnes\nhc2 <- agnes(ames_scale, method = \"complete\")\n\n# Agglomerative coefficient\nhc2$ac\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 0.926775\n```\n\n\n:::\n\n```{.r .cell-code}\n## [1] 0.926775\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\n# methods to assess\nm <- c( \"average\", \"single\", \"complete\", \"ward\")\nnames(m) <- c( \"average\", \"single\", \"complete\", \"ward\")\n\n# function to compute coefficient\nac <- function(x) {\n  agnes(ames_scale, method = x)$ac\n}\n\n# get agglomerative coefficient for each linkage method\npurrr::map_dbl(m, ac)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n  average    single  complete      ward \n0.9139303 0.8712890 0.9267750 0.9766577 \n```\n\n\n:::\n\n```{.r .cell-code}\n##   average    single  complete      ward \n## 0.9139303 0.8712890 0.9267750 0.9766577\n```\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

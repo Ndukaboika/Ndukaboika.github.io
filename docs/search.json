@@ -313,5 +313,26 @@
     "title": "Structural Equation Modeling Based Meta-Analysis",
     "section": "EFfect sizes in Meta-Analysis",
     "text": "EFfect sizes in Meta-Analysis\n\nprimary data in meta analysis.\nRepresents the magnitude of a phenomenon in quantitative terms.\nCan be standardized (e.g., Cohen’s d, correlation coefficient) or unstandardized (e.g., raw mean difference).\nThe generic effect-size for each study i is notated as \\(y_i\\) and is represented as:\n                        $$y_i = f_i + e_i$$\n                      $y_i$ = sample (observed) effect size for the ith study\n                      $f_i$ = population (true) effect size\n                      $e_i$ = error term in the observed effect-size\n                      $var(e_i)$ = a.k.a $v_i$ sampling variance (usually known in MA)\n\nChoosing Appropriate Effect Sizes\n\nEffect sizes should clearly indicate direction; variance-explained metrics (e.g \\(R^2, \\eta^2, \\Omega^2\\) are rarely used.\nSmall Sample Bias: Some estimators (e.g., standardized mean difference, SMD) are biased in small samples. Correction factors (e.g., Hedges’ correction) may be applied.\nDistributional Assumption: Effect sizes are assumed to follow a normal distribution, but they only approximate normality asymptotically, requiring a reasonable sample size.\nVariance Stabilizing Transformations:\n\nLog transformation for Relative Risk (RR) and Odds Ratio (OR).\nFisher’s z-transformation for correlation coefficients to normalize distributions.\n\n\n\n\n\nNduka Boika"
+  },
+  {
+    "objectID": "multi.html",
+    "href": "multi.html",
+    "title": "Structural Equation Modeling Based Meta-Analysis - multivarate",
+    "section": "",
+    "text": "When the research questions become more complicated, a single effect-size may not be sufficient to summarize the effect in the pry studies. Multiple effect sizes are required to quantify the effects of the study.\nAn extension of the univariate approach\nThe data for the analysis is the form of a vector or matrix\nstill the same convention as the univariate approach in terms of:\n\nsources of dependency (variation)\n\nfrom the samples in the primary study (sampling variance) in form of the covariance matrix - which is already known from the primary study.\nbetween study dependence which is represented by the between study variance component \\((\\tau^2)\\).\n\nit is assumed that the true effects-sizes between the studies maybe correlated.\ngiven one study, it is difficult to estimate this dependence"
+  },
+  {
+    "objectID": "multi.html#multivariate-approach",
+    "href": "multi.html#multivariate-approach",
+    "title": "Structural Equation Modeling Based Meta-Analysis - multivarate",
+    "section": "",
+    "text": "When the research questions become more complicated, a single effect-size may not be sufficient to summarize the effect in the pry studies. Multiple effect sizes are required to quantify the effects of the study.\nAn extension of the univariate approach\nThe data for the analysis is the form of a vector or matrix\nstill the same convention as the univariate approach in terms of:\n\nsources of dependency (variation)\n\nfrom the samples in the primary study (sampling variance) in form of the covariance matrix - which is already known from the primary study.\nbetween study dependence which is represented by the between study variance component \\((\\tau^2)\\).\n\nit is assumed that the true effects-sizes between the studies maybe correlated.\ngiven one study, it is difficult to estimate this dependence"
+  },
+  {
+    "objectID": "multi.html#multivariate-ffect-size-equations",
+    "href": "multi.html#multivariate-ffect-size-equations",
+    "title": "Structural Equation Modeling Based Meta-Analysis - multivarate",
+    "section": "Multivariate ffect-size equations",
+    "text": "Multivariate ffect-size equations\n\nMASEM combines the ideas of MA and SEM\nTest Structural Equation models on the pooled correlation (covariance) matrix\nTwo stages (TSSEM)\n\npool the correlation matrix together\npooled correlation matrix is used to fit the SEM\n\nThe metaSEM package handles both fixed- or random-effects models automatically.\nTSSEM uses Maximum Likelihood (ML) to obtain the pooled correlation matrix and the heterogeneity test for both the fixed- and random- effects model.\nThe parameter estimates are unbiased\neffective when correlation estimates are MCAR or MAR.\n\n###Fixed-effects model - Assumes common population (covariance) correlation matrices for all studies - If an ith study has a covariance matrix, the matrix can be decomposed into a product of the matrices of correlations and standard deviations. \\(\\boldsymbol{\\sum_i}(\\theta) = \\boldsymbol{D_i} \\boldsymbol{\\rho_i} \\boldsymbol{D_i}\\) \\(\\boldsymbol{\\sum_i}\\) = model implied covariance matrix. \\(\\boldsymbol{D_i}\\) = diagonal matrix of standard deviations. \\(\\boldsymbol{\\rho_i}\\) = correlation matrix in the i_th study. - A constraint is imposed such that \\(\\boldsymbol{\\rho} = \\boldsymbol{\\rho_1}=\\boldsymbol{\\rho_2}=\\boldsymbol{\\rho_3}...=\\boldsymbol{\\rho_k}\\) - \\(\\boldsymbol{D_i}\\) may vary across studies"
   }
 ]
