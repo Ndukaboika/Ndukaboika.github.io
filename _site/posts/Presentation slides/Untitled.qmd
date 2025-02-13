@@ -159,4 +159,4 @@ coef(fixed1) # extract the pooled correlation matrix
 
 
 #### Stage 2
-- We want to fit the Structural equation model. In the Digman study the model is a factor analytic model
+- We want to fit the Structural equation model. In the Digman study the model is a factor analytic model.
